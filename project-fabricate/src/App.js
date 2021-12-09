@@ -1,5 +1,7 @@
 import logo from './flower.png';
+// import logo from './logo.svg';
 import './App.css';
+import Canvas from './Canvas';
 
 function App() {
   return (
@@ -10,6 +12,9 @@ function App() {
          Project Fabricate
         </p>
       </header>
+        
+        <Canvas />
+    
     </div>
   );
 }

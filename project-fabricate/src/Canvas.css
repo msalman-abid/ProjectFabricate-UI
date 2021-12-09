@@ -1,0 +1,7 @@
+.Canvas {
+    display: flex;
+    padding-left: 5%;
+    padding-top: 5%;
+    flex-direction: column;
+    align-items: center;
+  }
