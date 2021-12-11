@@ -3,20 +3,54 @@ import { Button } from '@material-ui/core'
 import './Canvas.css';
 import CanvasDraw from "react-canvas-draw";
 
+
 class Canvas extends Component {
     
     state = {
         color: "black",
         width: 400,
         height: 400,
-        brushRadius: 10,
-        lazyRadius: 12,
+        brushRadius: 1,
+        lazyRadius: 1,
+        hideGrid: true,
       };
 
     render() {
         return (
-            <div>
-            <Button
+          <div>
+          <h2> Drawing Canvas</h2>
+          <CanvasDraw className='Canvas'
+          ref={canvasDraw => (this.saveableCanvas = canvasDraw)}
+          brushColor={this.state.color}
+          brushRadius={this.state.brushRadius}
+          lazyRadius={this.state.lazyRadius}
+          canvasWidth={this.state.width}
+          canvasHeight={this.state.height}
+          hideGrid={this.state.hideGrid}
+        />
+
+        <div className = "buttons" style={{ display: "flex" }}>
+
+          <Button style = {{color:'#282c34'}} variant='outlined' size='large'
+            onClick={() => {
+              this.saveableCanvas.eraseAll();
+            }}
+          >
+            Erase
+          </Button>
+
+          <div className="undo">
+          <Button style = {{color:'#282c34'}} variant='outlined' size='large'
+            onClick={() => {
+              this.saveableCanvas.undo();
+            }}
+          >
+            Undo
+          </Button>
+
+          </div>
+
+          <Button style = {{background:'#ffd400'}} variant='contained' size='large' 
             onClick={() => {
               localStorage.setItem(
                 "savedDrawing",
@@ -24,78 +58,11 @@ class Canvas extends Component {
               );
             }}
           >
-            Save
+            Submit
           </Button>
-          <Button
-            onClick={() => {
-              this.saveableCanvas.eraseAll();
-            }}
-          >
-            Erase
-          </Button>
-          <Button
-            onClick={() => {
-              this.saveableCanvas.undo();
-            }}
-          >
-            Undo
-          </Button>
-          <Button
-            onClick={() => {
-              console.log(this.saveableCanvas.getDataURL());
-              alert("DataURL written to console")
-            }}
-          >
-            GetDataURL
-          </Button>
-          <div>
-            <label>Width:</label>
-            <input
-              type="number"
-              value={this.state.width}
-              onChange={e =>
-                this.setState({ width: parseInt(e.target.value, 10) })
-              }
-            />
+
+
           </div>
-          <div>
-            <label>Height:</label>
-            <input
-              type="number"
-              value={this.state.height}
-              onChange={e =>
-                this.setState({ height: parseInt(e.target.value, 10) })
-              }
-            />
-          </div>
-          <div>
-            <label>Brush-Radius:</label>
-            <input
-              type="number"
-              value={this.state.brushRadius}
-              onChange={e =>
-                this.setState({ brushRadius: parseInt(e.target.value, 10) })
-              }
-            />
-          </div>
-          <div>
-            <label>Lazy-Radius:</label>
-            <input
-              type="number"
-              value={this.state.lazyRadius}
-              onChange={e =>
-                this.setState({ lazyRadius: parseInt(e.target.value, 10) })
-              }
-            />
-          </div>
-        <CanvasDraw className='Canvas'
-          ref={canvasDraw => (this.saveableCanvas = canvasDraw)}
-          brushColor={this.state.color}
-          brushRadius={this.state.brushRadius}
-          lazyRadius={this.state.lazyRadius}
-          canvasWidth={this.state.width}
-          canvasHeight={this.state.height}
-        />
         </div>
         )
     }
