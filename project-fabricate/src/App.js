@@ -1,9 +1,10 @@
 import logo from './flower.png';
-import arrow from './arrow.png';
+// import arrow from './arrow.png';
 import './App.css';
 import Canvas from './Canvas';
 import Sketch from './Sketch';
 import Design from './Design'
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 function App() {
   return (
@@ -16,9 +17,9 @@ function App() {
       </header>
       <div className='Components'>
         <Canvas />
-        <img  className="arrow" src={arrow}/>
+        <ArrowForwardIosIcon fontSize="large" style = {{color:'#ffd400'}}/>
         <Sketch/>
-        <img  className="arrow" src={arrow}/>
+        <ArrowForwardIosIcon fontSize="large" style = {{color:'#ffd400'}}/>
         <Design/>
       </div>
     </div>

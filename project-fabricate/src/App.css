@@ -28,8 +28,9 @@
 .Components{
   display: flex;
   flex-direction: row;
-  justify-content: left;
-  align-items: center;
+  justify-content: center;
+  /* align-items: center; */
+
 }
 
 @keyframes App-logo-spin {
@@ -41,7 +42,11 @@
   }
 }
 
-.arrow{
+/* .arrow{
   height: 7vmin;
-  margin-left: 2%;
-}
+  padding-left: 2%;
+} */
+
+/* .ArrowForwardIosIcon{
+align-items: center;
+} */
