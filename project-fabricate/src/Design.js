@@ -1,18 +1,19 @@
-import React, { Component } from "react";
-import { Button } from '@material-ui/core'
-import './Design.css';
+// import React, { Component } from "react";
+// import './Design.css';
 
-class Design extends Component {
+// import * as tf from '@tensorflow/tfjs';
+
+// function Design () {
     
-    render() {
-        return (
-          <div>
-            <h2> Design Generator</h2>
-            <div class="BoundingBox">
-            </div>
-          </div>
-        );
-    }
-}
+//   // const model = async () => {
+//   //   const x = await tf.loadLayersModel(process.env.PUBLIC_URL + 'model_converted/model.json');
+//   //   return x;
+//   // }
 
-export default Design;
+//         return (
+          
+//         );
+    
+// }
+
+// export default Design;

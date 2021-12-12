@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { Button } from '@material-ui/core'
-import './Canvas.css';
+import './DrawCanvas.css';
 import CanvasDraw from "react-canvas-draw";
 
 
-class Canvas extends Component {
+class DrawCanvas extends Component {
     
     state = {
         color: "black",
@@ -68,4 +68,4 @@ class Canvas extends Component {
     }
 }
 
-export default Canvas;
+export default DrawCanvas;
