@@ -2,12 +2,10 @@ import React, { Component } from "react";
 import { Button } from '@material-ui/core'
 import './Sketch.css';
 import * as tf from '@tensorflow/tfjs';
+import { border, height, width } from "@mui/system";
+import { tensor3d } from "@tensorflow/tfjs";
 
 
-// const model = async () => {
-//   const x = await tf.loadLayersModel(process.env.PUBLIC_URL + 'model_converted/model.json');
-//   return x;
-// }
 
 class Sketch extends Component {
 
@@ -20,43 +18,95 @@ class Sketch extends Component {
         this.handleChange = this.handleChange.bind(this)
       }
 
+
+
       async loadModel(tensor)
       {
-        // this.setState({
-        //   model: tf.loadLayersModel(process.env.PUBLIC_URL + 'model_converted/model.json')
-        // }).then( (res) => {
-        //   console.log(this.state.model)
-        //   console.log("Completed :)")
-        // }
-          
-        // )
+
+        tf.enableDebugMode()
         var model = await tf.loadLayersModel(process.env.PUBLIC_URL + 'model_converted/model.json')
-        console.log(model.predict(tensor))
-        return model;
+        return model.predict(tensor);
+        // return model
       }
 
       handleChange(elem) {
         
         this.setState({
-          // file: reader.readAsDataURL(file)
           file: URL.createObjectURL(elem.target.files[0]),
-        })
+        }, this.backendPredict(elem.target.files[0]))
         // this.props.pCallback(URL.createObjectURL(elem.target.files[0]));
-        console.log(this.state.file);
-        var y = document.getElementById("upload");
-        console.log(y);
-        var tensor = tf.browser.fromPixels(y);
-        console.log(tensor);
-        var model  = this.loadModel(tensor);
-        // model.then( (res) => {
-        //   var hello = model.predict(tensor);
-        //   console.log(hello);
-        // }
-        // )
-
 
       }
 
+      getBase64Image(img) {
+        var canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+        var ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0);
+        var dataURL = canvas.toDataURL("image/png");
+        return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+      }
+
+      backendPredict(blob) {
+        
+        var formdata = new FormData();
+        formdata.append('image',blob);
+
+        fetch('/api/predict', {
+          method: 'POST',
+          body: formdata
+        }).then(data => data.json())
+          .then(result => {
+            var bytestring = result['status'];
+					  var image = bytestring.split('\'')[1];
+            var final_img = document.getElementById("final");
+            final_img.src = 'data:image/jpeg;base64,'+image;
+            // console.log(final_img.src);
+          })
+      }
+
+
+      modelPredict() {
+
+        // Create image object to hold data
+        var m_img = new Image(256,256);
+        m_img.src = this.state.file;
+        
+        console.log(tf.ENV.features)
+        m_img.onload = () => {
+
+            // Capture uploaded image and convert to tensor
+            var tensor = tf.browser.fromPixels(m_img).resizeBilinear([256, 256]);
+            
+            // tf.browser.toPixels(tensor, document.getElementById("final"));
+            
+            // Normalize the image from [0, 255] to [-1, 1].
+            const offset = tf.scalar(127.5);
+            const normalized = tensor.sub(offset).div(offset);
+
+            // Add extra dim for batch predict support
+            tensor = tf.expandDims(normalized);
+            tensor.data().then(data => console.log(data));
+            
+            // Load model and return prediction
+            this.loadModel(tensor).then( (result) => {
+
+              // console.log(result.summary());
+              // return;
+              result.data().then(data => console.log(data));
+              
+              var new_tensor = result.squeeze();
+              new_tensor = new_tensor.toInt();
+              new_tensor.data().then(data => console.log(data));
+              
+              tf.browser.toPixels(new_tensor, document.getElementById("final"));
+              console.log("Done");
+            }
+            )
+        }
+
+      }
 
       
 
@@ -73,7 +123,8 @@ class Sketch extends Component {
 
             <h2> Design Generator</h2>
             <div className="BoundingBox">
-              <img id="final" width="400" height="400" src={this.state.finalimg} />
+              <img id="final" width="400" height="400" />
+              {/* <img id="final" width="400" height="400" src={this.state.finalimg} /> */}
             </div>
           </div>
 
