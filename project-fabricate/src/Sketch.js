@@ -2,9 +2,7 @@ import React, { Component } from "react";
 import { Button } from '@material-ui/core'
 import './Sketch.css';
 import * as tf from '@tensorflow/tfjs';
-import { border, height, width } from "@mui/system";
-import { tensor3d } from "@tensorflow/tfjs";
-import { red } from 'material-ui/colors';
+
 
 
 

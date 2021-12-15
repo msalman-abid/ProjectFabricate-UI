@@ -1,11 +1,11 @@
 import logo from './flower.png';
-// import arrow from './arrow.png';
 import React, { Component } from "react";
 import './App.css';
 import DrawCanvas from './DrawCanvas'; 
 import Sketch from './Sketch';
 import Design from './Design'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+
 
 class App extends Component {
   constructor(props){
@@ -25,7 +25,7 @@ class App extends Component {
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <p>
-            PROJECT FABRICATE
+            Project Fabricate
           </p>
         </header>
         <div className='Components'>

@@ -1,13 +1,16 @@
 .App {
   text-align: center;
-    
 }
 
 .App-logo {
   height: 10vmin;
   pointer-events: none;
+  margin-right: 1%;
 }
 
+.p {
+  font-family: 'Titillium Web', sans-serif;;
+}
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
