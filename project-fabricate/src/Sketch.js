@@ -124,7 +124,7 @@ class Sketch extends Component {
             </div>
 
             <div className="btn">
-              <Button color = 'red'
+              <Button
                 variant="contained"
                 component="label"
               >

@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+    
 }
 
 .App-logo {
@@ -16,13 +17,16 @@
 
 .App-header {
   background-color: #282c34;
-  min-height: 5vh;
+  background-image: url("bg.png");
+  /* min-height: 5vh; */
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  font-size: calc(10px + 5vmin);
   color: white;
+  height: 17vmin;
+  /* opacity: 0.7; */
 }
 
 .Components{
@@ -30,7 +34,6 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-
 }
 
 @keyframes App-logo-spin {
@@ -41,12 +44,3 @@
     transform: rotate(360deg);
   }
 }
-
-/* .arrow{
-  height: 7vmin;
-  padding-left: 2%;
-} */
-
-/* .ArrowForwardIosIcon{
-align-items: center;
-} */

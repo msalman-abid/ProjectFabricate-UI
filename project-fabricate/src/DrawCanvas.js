@@ -31,7 +31,7 @@ class DrawCanvas extends Component {
 
         <div className = "buttons" style={{ display: "flex" }}>
 
-          <Button style = {{color:'#282c34'}} variant='outlined' size='large'
+          <Button style = {{color:'#282c34'}} variant='contained' size='large'
             onClick={() => {
               this.saveableCanvas.eraseAll();
             }}
@@ -40,7 +40,7 @@ class DrawCanvas extends Component {
           </Button>
 
           <div className="undo">
-          <Button style = {{color:'#282c34'}} variant='outlined' size='large'
+          <Button style = {{color:'#282c34'}} variant='contained' size='large'
             onClick={() => {
               this.saveableCanvas.undo();
             }}
