@@ -23,7 +23,7 @@ def load_image(file,size=[256,256]):
     # pixels = np.expand_dims(pixels, 0)
     return pixels
 
-model = load_model('../old.h5')
+model = load_model('../model_1500.h5')
 print("[Model] Loaded Successfully.")
 
 app = Flask(__name__)

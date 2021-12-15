@@ -4,6 +4,7 @@ import './Sketch.css';
 import * as tf from '@tensorflow/tfjs';
 import { border, height, width } from "@mui/system";
 import { tensor3d } from "@tensorflow/tfjs";
+import { red } from 'material-ui/colors';
 
 
 
@@ -34,7 +35,6 @@ class Sketch extends Component {
         this.setState({
           file: URL.createObjectURL(elem.target.files[0]),
         }, this.backendPredict(elem.target.files[0]))
-        // this.props.pCallback(URL.createObjectURL(elem.target.files[0]));
 
       }
 
@@ -61,7 +61,12 @@ class Sketch extends Component {
             var bytestring = result['status'];
 					  var image = bytestring.split('\'')[1];
             var final_img = document.getElementById("final");
-            final_img.src = 'data:image/jpeg;base64,'+image;
+            this.setState({
+              finalimg: 'data:image/jpeg;base64,'+image,
+            },
+            () => {this.props.pCallback(this.state.finalimg)}
+            )
+            // final_img.src = 'data:image/jpeg;base64,'+image;
             // console.log(final_img.src);
           })
       }
@@ -114,18 +119,25 @@ class Sketch extends Component {
         return (
           <div>
             <h2> Augmented Sketch</h2>
-            <div className="Image">
+             <div className="Image">
               <img id="upload" width='400' height='400' src={this.state.file} />
             </div>
-            <input type="file" onChange={this.handleChange} />
 
-
-
-            <h2> Design Generator</h2>
-            <div className="BoundingBox">
-              <img id="final" width="400" height="400" />
-              {/* <img id="final" width="400" height="400" src={this.state.finalimg} /> */}
+            <div className="btn">
+              <Button color = 'red'
+                variant="contained"
+                component="label"
+              >
+                Upload File
+                <input
+                  type="file"
+                  hidden
+                  onChange={this.handleChange}
+                />
+              </Button>
             </div>
+
+
           </div>
 
         );
