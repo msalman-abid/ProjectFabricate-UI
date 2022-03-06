@@ -42,23 +42,16 @@ from PIL import Image
 from pathlib import Path
 import numpy as np
 count = 0 
-if __name__ == '__main__':
-    fe = FeatureExtractor()
+# if __name__ == '__main__':
+#     fe = FeatureExtractor()
 
-    # for img_path in sorted(Path("C:/Users/aiman/OneDrive/Desktop/fyp/data_quilting/").glob("*.png")):
+    # for img_path in sorted(Path("C:/Users/aiman/OneDrive/Desktop/fyp/sketchy/").glob("*.png")):
     #     count+=1 
     #     feature = fe.extract(img=Image.open(img_path))
-    #     feature_path = Path("C:/Users/aiman/OneDrive/Desktop/fyp/Image-Quilting/new_flowers/") / (img_path.stem + ".npy")  
+    #     feature_path = Path("C:/Users/aiman/OneDrive/Desktop/fyp/Image-Quilting/flowers_feature_array/") / (img_path.stem + ".npy")  
     #     np.save(feature_path, feature)
     # print(count)
 
-fe = FeatureExtractor()
-features = []
-img_paths = []
-for feature_path in Path("C:/Users/aiman/OneDrive/Desktop/fyp/Image-Quilting/new_flowers/").glob("*.npy"):
-    features.append(np.load(feature_path))
-    img_paths.append("C:/Users/aiman/OneDrive/Desktop/fyp/data_quilting/"+feature_path.stem + ".png")
-features = np.array(features)
 
 
 # Import the libraries
@@ -68,29 +61,32 @@ import glob
 # Insert the image query
 
 def retrieval(folder='detected_objects'):
+    fe = FeatureExtractor()
+    features = []
+    img_paths = []
+    lst=[]
     images=[]
+    for feature_path in Path("C:/Users/aiman/OneDrive/Desktop/fyp/Image-Quilting/complete_feature_array/").glob("*.npy"):
+        features.append(np.load(feature_path))
+        img_paths.append("C:/Users/aiman/OneDrive/Desktop/fyp/data_quilting/"+feature_path.stem + ".png")
+    features = np.array(features)
+    
     for image in glob.iglob(f'{folder}/*'):
         images.append(image)
-    lst=[]
-    final=[]
-    num=0
+    
     for image in images:
         img = Image.open(image)
         plt.imshow(img)
         # Extract its features
-        fe = FeatureExtractor()
         query = fe.extract(img)
         # Calculate the similarity (distance) between images
         dists = np.linalg.norm(features - query, axis=1)
         # Extract 30 images that have lowest distance
         ids = np.argsort(dists)[:2]
         scores = [(dists[id], img_paths[id]) for id in ids]
-        num=0
         for i in scores:
             lst.append(i[1])
-            num+=1
     
-    print(lst)
     return lst
 
 retrieval()
