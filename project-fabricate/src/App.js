@@ -11,6 +11,7 @@ class App extends Component {
   constructor(props){
     super(props)
     this.state = {
+      a_file: null,
       p_file: null,
     }
   }
@@ -19,6 +20,10 @@ class App extends Component {
     this.setState({p_file: childData});
   }
   
+  callbackAugment = (data) =>{ 
+    this.setState({a_file: data});
+  }
+
   render() {
     return (
       <div className="App">
@@ -29,10 +34,10 @@ class App extends Component {
           </p>
         </header>
         <div className='Components'>
-          <DrawCanvas className="canvas" />
+          <DrawCanvas className="canvas" aCallback = {this.callbackAugment} />
           <ArrowForwardIosIcon fontSize="large" style={{ color: '#ffd400' }} />
 
-          <Sketch pCallback = {this.callbackFunction} />
+          <Sketch pCallback = {this.callbackFunction} m_file={this.state.a_file} />
           {/* <p> {this.state.p_file}</p> */}
           <ArrowForwardIosIcon fontSize="large" style={{ color: '#ffd400' }} />
 

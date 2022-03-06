@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import request
+from flask import request, json
 from PIL import Image
 import PIL
 import os , io , sys
@@ -10,6 +10,11 @@ from skimage import transform
 from tensorflow.keras.models import load_model
 import tensorflow as tf
 
+
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(os.path.dirname(SCRIPT_DIR))
+
+from flowers_quilting.main import augment
 
 def load_image(file,size=[256,256]):
     pixels = tf.convert_to_tensor(file)
@@ -23,7 +28,7 @@ def load_image(file,size=[256,256]):
     # pixels = np.expand_dims(pixels, 0)
     return pixels
 
-model = load_model('../model_1500.h5')
+# model = load_model('./model_1500.h5')
 print("[Model] Loaded Successfully.")
 
 app = Flask(__name__)
@@ -59,4 +64,43 @@ def predict():
     img.save(rawBytes, "JPEG")
     rawBytes.seek(0)
     img_base64 = base64.b64encode(rawBytes.read())
-    return {'status':str(img_base64), 'test':"hello"}
+    return {'status':str(img_base64), 'predicted': True}
+
+@app.route('/api/augment', methods=['POST'])
+def augment_me():
+    # get image from request and read it as an rgb image
+    # url = request.files['image'] ## byte file
+    # print(type(url))
+    # url = url.read()
+    # print(type(url))
+    # if "data:image/png;base64," in url:
+    #     print("read")
+    #     base_string = url.replace("data:image/png;base64,", "")
+    #     decoded_img = base64.b64decode(base_string)
+    #     img = Image.open(BytesIO(decoded_img))
+
+    #     file_name = file_name_for_base64_data + ".png"
+    #     img.save(file_name, "png")
+    # return {"hello":"hello"}
+
+    file = request.files['image']
+    image = Image.open(file)
+    new_image = Image.new("RGBA", image.size, "WHITE") # Create a white rgba background
+    new_image.paste(image, (0, 0), image)              # Paste the image on the background. Go to the links given below for details.
+    new_image.convert('RGB')
+
+    #convert PIL image to cv2
+    img = np.array(new_image)
+    img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
+
+    img = augment(img)
+    rawBytes = io.BytesIO()
+    img.save(rawBytes, "JPEG")
+    rawBytes.seek(0)
+    img_base64 = base64.b64encode(rawBytes.read())
+    return {'status':str(img_base64), 'augmented': True}
+
+if __name__ == '__main__':
+    app.run()    
+
+

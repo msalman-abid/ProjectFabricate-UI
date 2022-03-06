@@ -2,7 +2,7 @@ import numpy as np
 from skimage import util
 import heapq
 from PIL import Image
-from object_detection import *
+from .object_detection import *
 import glob
 from resizeimage import resizeimage
 import random
@@ -232,5 +232,5 @@ def quilt(image_path,num_block,random_place=False,block_size=254, mode="Best"):
 
     img=Image.fromarray((res*255).astype(np.uint8))
     img=resizeimage.resize_cover(img, [256, 256])
-    img.save("output_new.png", bitmap_format='png')
+    # img.save("output_new.png", bitmap_format='png')
     return img

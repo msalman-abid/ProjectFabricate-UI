@@ -60,23 +60,24 @@ import numpy as np
 import glob
 # Insert the image query
 
-def retrieval(folder='detected_objects'):
+def retrieval(folder='C:\\Users\\Salman\\Documents\\GitHub\\ProjectFabricate-UI\\flowers_quilting\\detected_objects'):
     fe = FeatureExtractor()
     features = []
     img_paths = []
     lst=[]
     images=[]
-    for feature_path in Path("C:/Users/aiman/OneDrive/Desktop/fyp/Image-Quilting/flowers_feature_array/").glob("*.npy"):
+    for feature_path in Path("C:\\Users\\Salman\\Documents\\GitHub\\ProjectFabricate-UI\\flowers_quilting\\flowers_feature_array\\").glob("*.npy"):
         features.append(np.load(feature_path))
-        img_paths.append("C:/Users/aiman/OneDrive/Desktop/fyp/sketchy/"+feature_path.stem + ".png")
+        img_paths.append("C:\\Users\\Salman\\Documents\\GitHub\\ProjectFabricate-UI\\flowers_quilting\\sketchy\\"+feature_path.stem + ".png")
+
     features = np.array(features)
-    
     for image in glob.iglob(f'{folder}/*'):
         images.append(image)
+        print(image)
     
     for image in images:
         img = Image.open(image)
-        plt.imshow(img)
+        # plt.imshow(img)
         # Extract its features
         query = fe.extract(img)
         # Calculate the similarity (distance) between images
@@ -86,8 +87,7 @@ def retrieval(folder='detected_objects'):
         scores = [(dists[id], img_paths[id]) for id in ids]
         for i in scores:
             lst.append(i[1])
-    
     return lst
 
-retrieval()
-   
+if __name__ == "__main__":
+    retrieval()

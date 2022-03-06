@@ -11,7 +11,7 @@ class Sketch extends Component {
     constructor(props){
         super(props)
         this.state = {
-          file: null,
+          file: this.props.m_file,
           finalimg: null,
         }
         this.handleChange = this.handleChange.bind(this)
@@ -48,8 +48,10 @@ class Sketch extends Component {
 
       backendPredict(blob) {
         
+        console.log(blob);
         var formdata = new FormData();
         formdata.append('image',blob);
+        console.log(formdata);
 
         fetch('/api/predict', {
           method: 'POST',
@@ -111,14 +113,13 @@ class Sketch extends Component {
 
       }
 
-      
 
       render() {
         return (
           <div>
             <h2> Augmented Sketch</h2>
              <div className="Image">
-              <img id="upload" width='400' height='400' src={this.state.file} />
+              <img id="upload" width='400' height='400' src={this.props.m_file == null ? this.state.file : this.props.m_file} />
             </div>
 
             <div className="btn">

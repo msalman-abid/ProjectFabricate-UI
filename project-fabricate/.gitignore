@@ -28,3 +28,6 @@ __pycache__
 *jpg
 staging.py
 model_converted
+
+*.zip
+*.png

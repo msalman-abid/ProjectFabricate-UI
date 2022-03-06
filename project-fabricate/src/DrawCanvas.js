@@ -56,6 +56,37 @@ class DrawCanvas extends Component {
                 "savedDrawing",
                 this.saveableCanvas.getSaveData()
               );
+
+              fetch(this.saveableCanvas.getDataURL())
+                .then(res => res.blob())
+                .then(blob => {
+
+                  const file = new File([blob], "image.png");
+                  var formdata = new FormData();
+                  formdata.append('image', file);
+
+                  console.log(formdata);
+
+                  fetch('/api/augment', {
+                    method: 'POST',
+                    body: formdata,
+                  })
+                })
+
+
+              
+              // fetch request to /api/augment and send the sketchData
+              
+              // .then(
+              //   data => data.json()
+              // ).then(
+              //   result => {
+              //     var bytestring = result['status'];
+					    //     var image = bytestring.split('\'')[1];
+              //     this.props.aCallback('data:image/jpeg;base64,'+image);
+              //   }
+              // )
+
             }}
           >
             Submit
