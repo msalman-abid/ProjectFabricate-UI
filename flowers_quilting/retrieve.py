@@ -73,7 +73,7 @@ def retrieval(folder='C:\\Users\\Salman\\Documents\\GitHub\\ProjectFabricate-UI\
     features = np.array(features)
     for image in glob.iglob(f'{folder}/*'):
         images.append(image)
-        print(image)
+        
     
     for image in images:
         img = Image.open(image)

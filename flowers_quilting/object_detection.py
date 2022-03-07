@@ -6,8 +6,14 @@ from PIL import Image
 
 from .retrieve import retrieval
 def object_detection(path):
-    # image = cv2.imread(path)
-    image = path # assuming image format is already RGB
+    image = None
+    retrieved = False
+
+    if type(path) == str:
+        image = cv2.imread(path)
+        retrieved = True
+    else:
+        image = path # assuming image format is already RGB
     
     original = image.copy()
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -26,11 +32,19 @@ def object_detection(path):
         x,y,w,h = cv2.boundingRect(c)
         cv2.rectangle(image, (x, y), (x + w, y + h), (36,255,12), 2)
         ROI = original[y:y+h, x:x+w]
-        # ext='jpg' if path.split('.')[1]=='jpg' else 'png'
-        ext = '.png'
+        
         base=os.path.dirname(os.path.abspath(__file__))
-        pat='\\detected_objects\\'
-        base = base + pat
-        end_path = base+str(num)+ext
+        m_dir='\\detected_objects\\'
+        base = base + m_dir
+        
+        if not retrieved:
+            ext = '.png'
+            end_path = base + str(num)+ext
+        else:
+            ext='.jpg' if path.split('.')[1]=='jpg' else '.png'
+            orig_name = os.path.basename(path)
+            end_path = base + orig_name.split('.')[0] + ext
+
+        print(num, end_path)
         img = Image.fromarray(ROI, 'RGB').save(end_path)
         num += 1

@@ -28,12 +28,12 @@ def load_image(file,size=[256,256]):
     # pixels = np.expand_dims(pixels, 0)
     return pixels
 
-# model = load_model('./model_1500.h5')
-print("[Model] Loaded Successfully.")
+model = load_model('./model_1500.h5')
+print("[+] Model loaded successfully.")
 
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024 # 16 MB
-print("[Server] Started Succesfully.")
+print("[+] Server started succesfully.")
 
 @app.route('/')
 def main():
@@ -53,7 +53,7 @@ def predict():
 
     pixels = load_image(img)
     prediction = model(pixels, training=True)
-    print("[Model] Prediction Successful!")
+    print("[+] Model prediction successful!")
     prediction = ((prediction + 1) / 2.0) * 255
 
     #################################################
@@ -68,20 +68,6 @@ def predict():
 
 @app.route('/api/augment', methods=['POST'])
 def augment_me():
-    # get image from request and read it as an rgb image
-    # url = request.files['image'] ## byte file
-    # print(type(url))
-    # url = url.read()
-    # print(type(url))
-    # if "data:image/png;base64," in url:
-    #     print("read")
-    #     base_string = url.replace("data:image/png;base64,", "")
-    #     decoded_img = base64.b64decode(base_string)
-    #     img = Image.open(BytesIO(decoded_img))
-
-    #     file_name = file_name_for_base64_data + ".png"
-    #     img.save(file_name, "png")
-    # return {"hello":"hello"}
 
     file = request.files['image']
     image = Image.open(file)
@@ -94,6 +80,7 @@ def augment_me():
     img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
 
     img = augment(img)
+    print("[+] Image augmentation successful!")
     rawBytes = io.BytesIO()
     img.save(rawBytes, "JPEG")
     rawBytes.seek(0)

@@ -154,7 +154,7 @@ def quilt(image_path,num_block,random_place=False,block_size=254, mode="Best"):
 
     for i in image_path[:4]:
         object_detection(i)
-    folder='detected_objects'
+    folder='C:\\Users\\Salman\\Documents\\GitHub\\ProjectFabricate-UI\\flowers_quilting\\detected_objects'
     for i in glob.iglob(f'{folder}/*'):
         texture = Image.open(i)
         # texture = texture.convert("RGBA")

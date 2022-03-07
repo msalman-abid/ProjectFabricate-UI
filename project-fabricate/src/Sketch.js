@@ -119,7 +119,9 @@ class Sketch extends Component {
           <div>
             <h2> Augmented Sketch</h2>
              <div className="Image">
-              <img id="upload" width='400' height='400' src={this.props.m_file == null ? this.state.file : this.props.m_file} />
+              <img id="upload" width='400' height='400' 
+                src={this.props.m_file == null ? this.state.file : this.props.m_file}
+                 />
             </div>
 
             <div className="btn">

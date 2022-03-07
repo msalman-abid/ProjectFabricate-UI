@@ -5,7 +5,8 @@ import CanvasDraw from "react-canvas-draw";
 
 
 class DrawCanvas extends Component {
-    
+
+
     state = {
         color: "black",
         width: 400,
@@ -14,6 +15,57 @@ class DrawCanvas extends Component {
         lazyRadius: 1,
         hideGrid: true,
       };
+
+      backendPredict(img) {
+        
+        fetch(img)
+        .then(res => res.blob())
+        .then(blob => {
+        var formdata = new FormData();
+        formdata.append('image',blob);
+        console.log(formdata);
+
+        fetch('/api/predict', {
+          method: 'POST',
+          body: formdata
+        }).then(data => data.json())
+          .then(result => {
+            var bytestring = result['status'];
+					  var n_image = bytestring.split('\'')[1];
+            n_image = 'data:image/jpeg;base64,'+ n_image;
+            
+            this.props.pCallback(n_image);
+          })
+        })
+      }
+
+      augment()
+      {
+        fetch(this.saveableCanvas.getDataURL())
+          .then(res => res.blob())
+          .then(blob => {
+
+            const file = new File([blob], "image.png");
+            var formdata = new FormData();
+            formdata.append('image', file);
+
+            console.log(formdata);
+
+            fetch('/api/augment', {
+              method: 'POST',
+              body: formdata,
+            }).then(data => data.json())
+            .then(result => {
+              var bytestring = result['status'];
+              var image = 'data:image/jpeg;base64,'+ 
+                bytestring.split('\'')[1];
+              
+              this.props.aCallback(image);
+              this.backendPredict(image);
+              
+            })
+          })
+      }
 
     render() {
         return (
@@ -56,37 +108,7 @@ class DrawCanvas extends Component {
                 "savedDrawing",
                 this.saveableCanvas.getSaveData()
               );
-
-              fetch(this.saveableCanvas.getDataURL())
-                .then(res => res.blob())
-                .then(blob => {
-
-                  const file = new File([blob], "image.png");
-                  var formdata = new FormData();
-                  formdata.append('image', file);
-
-                  console.log(formdata);
-
-                  fetch('/api/augment', {
-                    method: 'POST',
-                    body: formdata,
-                  })
-                })
-
-
-              
-              // fetch request to /api/augment and send the sketchData
-              
-              // .then(
-              //   data => data.json()
-              // ).then(
-              //   result => {
-              //     var bytestring = result['status'];
-					    //     var image = bytestring.split('\'')[1];
-              //     this.props.aCallback('data:image/jpeg;base64,'+image);
-              //   }
-              // )
-
+                this.augment();
             }}
           >
             Submit
