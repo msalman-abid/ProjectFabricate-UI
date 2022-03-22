@@ -16,6 +16,7 @@ sys.path.append(os.path.dirname(SCRIPT_DIR))
 
 from flowers_quilting.main import augment
 
+
 def load_image(file,size=[256,256]):
     pixels = tf.convert_to_tensor(file)
     pixels = tf.cast(pixels, tf.float32)
@@ -31,9 +32,21 @@ def load_image(file,size=[256,256]):
 model = load_model('./model_1500.h5')
 print("[+] Model loaded successfully.")
 
+
+# create directory tmp if not exist
+if not os.path.exists('./tmp'):
+    os.makedirs('./tmp')
+
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024 # 16 MB
 print("[+] Server started succesfully.")
+
+# SAE = None
+# try:
+#     SAE = SwAeController("floral_default")
+#     print("[+] SUCCESS")
+# except Exception as e:
+#     print(e)
 
 @app.route('/')
 def main():
@@ -60,6 +73,13 @@ def predict():
     
     prediction = np.array(prediction[0], dtype=np.uint8)
     img = Image.fromarray(prediction)
+    
+    ### Test autoencoder ###
+    # save image as jpg
+    img.save('./test.jpg')
+
+    
+        
     rawBytes = io.BytesIO()
     img.save(rawBytes, "JPEG")
     rawBytes.seek(0)
@@ -86,6 +106,39 @@ def augment_me():
     rawBytes.seek(0)
     img_base64 = base64.b64encode(rawBytes.read())
     return {'status':str(img_base64), 'augmented': True}
+
+@app.route('/api/auto_enc', methods=['POST'])
+def auto_enc():
+
+    struc_file = request.files['image_tex']
+    tex_file = request.files['image_struct']
+    
+    
+    tex_image = Image.open(tex_file).convert("RGBA")
+    struc_image = Image.open(struc_file).convert("RGB") # change to RGBA if need
+
+    new_image = Image.new("RGBA", tex_image.size, "WHITE") # Create a white rgba background
+    new_image.paste(tex_image, (0, 0), tex_image)              # Paste the image on the background. Go to the links given below for details.
+    tex_image = new_image.convert('RGB')
+
+    # save tex_image as jpg in tmp directory
+    tex_image.save('./tmp/tex_image.jpg')
+    # save struc_image as jpg in tmp directory
+    struc_image.save('./tmp/struc_image.jpg')
+
+    ### AUTO ENCODER SCRIPT ###
+
+    ### END ###
+
+
+    print("[+] Image swapping successful!")
+    rawBytes = io.BytesIO()
+    tex_image.save(rawBytes, "JPEG")
+    rawBytes.seek(0)
+    img_base64 = base64.b64encode(rawBytes.read())
+    return {'status':str(img_base64), 'augmented': True}
+
+
 
 if __name__ == '__main__':
     app.run()    

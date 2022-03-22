@@ -6,3 +6,10 @@
 *.pyc
 *.h5
 *.jpg
+flask-api/autoencoder/*
+flask-api/api
+flask-api/data
+flask-api/models
+flask-api/util
+flask-api/checkpoints
+

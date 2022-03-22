@@ -1,12 +1,11 @@
 import React, { Component } from "react";
 import { Button } from '@material-ui/core'
-import './Sketch.css';
-import * as tf from '@tensorflow/tfjs';
+import './Autoenc.css';
 
 
 
 
-class Sketch extends Component {
+class Autoenc extends Component {
 
     constructor(props){
         super(props)
@@ -17,11 +16,15 @@ class Sketch extends Component {
         this.handleChange = this.handleChange.bind(this)
       }
 
+
+
+      
+
       handleChange(elem) {
-        
+        // TODO : handle file upload
         this.setState({
           file: URL.createObjectURL(elem.target.files[0]),
-        }, this.backendPredict(elem.target.files[0]))
+        }, this.backendAutoencoder(elem.target.files[0]))
 
       }
 
@@ -35,40 +38,47 @@ class Sketch extends Component {
         return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
       }
 
-      backendPredict(blob) {
+      backendAutoencoder(blob) {
         
-        console.log(blob);
-        var formdata = new FormData();
-        formdata.append('image',blob);
-        console.log(formdata);
+        // if (blob == null || this.props.m_design == null) {
+        //   return;
+        // }
 
-        fetch('/api/predict', {
-          method: 'POST',
-          body: formdata
-        }).then(data => data.json())
-          .then(result => {
-            var bytestring = result['status'];
-					  var image = bytestring.split('\'')[1];
-            var final_img = document.getElementById("final");
-            this.setState({
-              finalimg: 'data:image/jpeg;base64,'+image,
-            },
-            () => {this.props.pCallback(this.state.finalimg)}
-            )
-            // final_img.src = 'data:image/jpeg;base64,'+image;
-            // console.log(final_img.src);
-          })
-      }
+        fetch(this.props.m_design)
+        .then(res => res.blob())
+        .then(blob_struc => {
+
+          var formdata = new FormData();
+          formdata.append('image_tex',blob);
+          formdata.append('image_struct',blob_struc);
+
+          fetch('/api/auto_enc', {
+            method: 'POST',
+            body: formdata
+          }).then(data => data.json())
+            .then(result => {
+              var bytestring = result['status'];
+              var image = bytestring.split('\'')[1];
+              var final_img = document.getElementById("final");
+              this.setState({
+                finalimg: 'data:image/jpeg;base64,'+image,
+              }
+              )
+              // final_img.src = 'data:image/jpeg;base64,'+image;
+              // console.log(final_img.src);
+            })
+      })
+    }
 
 
 
       render() {
         return (
           <div>
-            <h2> Augmented Sketch</h2>
+            <h2> Auto Enc Sketch</h2>
              <div className="Image">
               <img id="upload" width='400' height='400' 
-                src={this.props.m_file == null ? this.state.file : this.props.m_file}
+                src={this.state.file}
                  />
             </div>
 
@@ -77,7 +87,7 @@ class Sketch extends Component {
                 variant="contained"
                 component="label"
               >
-                Upload File
+                Upload Texture
                 <input
                   type="file"
                   hidden
@@ -93,4 +103,4 @@ class Sketch extends Component {
     }
 }
 
-export default Sketch;
+export default Autoenc;
