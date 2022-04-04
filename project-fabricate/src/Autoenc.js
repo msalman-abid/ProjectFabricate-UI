@@ -2,9 +2,6 @@ import React, { Component } from "react";
 import { Button } from '@material-ui/core'
 import './Autoenc.css';
 
-
-
-
 class Autoenc extends Component {
 
     constructor(props){
@@ -15,11 +12,7 @@ class Autoenc extends Component {
         }
         this.handleChange = this.handleChange.bind(this)
       }
-
-
-
       
-
       handleChange(elem) {
         // TODO : handle file upload
         this.setState({

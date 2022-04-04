@@ -3,10 +3,7 @@ import { Button } from '@material-ui/core'
 import './DrawCanvas.css';
 import CanvasDraw from "react-canvas-draw";
 
-
 class DrawCanvas extends Component {
-
-
     state = {
         color: "black",
         width: 400,
