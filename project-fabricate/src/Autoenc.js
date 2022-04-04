@@ -37,6 +37,7 @@ class Autoenc extends Component {
         //   return;
         // }
 
+        // converting image to blob to send to back-end
         fetch(this.props.m_design)
         .then(res => res.blob())
         .then(blob_struc => {

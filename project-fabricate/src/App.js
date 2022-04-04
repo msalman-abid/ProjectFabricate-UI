@@ -27,6 +27,7 @@ class App extends Component {
       a_file: null,
       p_file: null,
       tiled: null,
+      slider_value: 2,
     }
   }
 
@@ -38,9 +39,33 @@ class App extends Component {
     this.setState({a_file: data})
   }
   onClick = () => {
-    this.setState({
-      tiled: tiledimg
+    // this.setState({
+    //   tiled: tiledimg
+    // })
+
+    // convert image to blob and send to server
+    fetch(this.state.p_file)
+    .then(res => res.blob())
+    .then(blob => {
+      
+      var formdata = new FormData();
+      formdata.append('image',blob);
+      console.log(this.state.slider_value)
+      formdata.append('size',this.state.slider_value);
+      fetch('/api/tiled', {
+        method: 'POST',
+        body: formdata
+      }).then(data => data.json()) //recieve data from server
+        .then(result => {
+          var bytestring = result['status']; //extract from JSON
+          var image = bytestring.split('\'')[1];
+          this.setState({
+            //save base64 image to state
+            tiled: 'data:image/jpeg;base64,'+image 
+          })
+        })
     })
+
 
   }
 
@@ -80,7 +105,10 @@ class App extends Component {
                 max={10}
                 // size='large'
                 color='secondary'
-                sx={{width: 20}}
+                onChangeCommitted = { (e, value) => this.setState(
+                  {slider_value: value}, 
+                  console.log(this.state.slider_value)
+                  )}
               />
           </Box>
           <div className="button">

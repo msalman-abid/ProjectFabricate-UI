@@ -7,6 +7,8 @@ import numpy as np
 import base64
 import cv2
 from skimage import transform
+from texturizing import tile, img2tex
+
 from tensorflow.keras.models import load_model
 import tensorflow as tf
 
@@ -138,6 +140,21 @@ def auto_enc():
     img_base64 = base64.b64encode(rawBytes.read())
     return {'status':str(img_base64), 'augmented': True}
 
+@app.route('/api/tiled', methods=['POST'])
+def tiled():
+    file = request.files['image']
+    size = request.form['size']
+    image = Image.open(file)
+
+    image = img2tex(image)
+    image = tile(image, int(size), int(size))
+
+    print("[+] Image tiling successful!")
+    rawBytes = io.BytesIO()
+    image.save(rawBytes, "JPEG")
+    rawBytes.seek(0)
+    img_base64 = base64.b64encode(rawBytes.read())
+    return {'status':str(img_base64), 'tiled': True}
 
 
 if __name__ == '__main__':
