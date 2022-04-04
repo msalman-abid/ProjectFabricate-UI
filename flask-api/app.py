@@ -144,9 +144,10 @@ def auto_enc():
 def tiled():
     file = request.files['image']
     size = request.form['size']
+    overlap = request.form['overlap']
     image = Image.open(file)
 
-    image = img2tex(image)
+    image = img2tex(image, float(overlap))
     image = tile(image, int(size), int(size))
 
     print("[+] Image tiling successful!")

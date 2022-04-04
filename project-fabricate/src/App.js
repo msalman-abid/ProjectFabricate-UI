@@ -28,6 +28,7 @@ class App extends Component {
       p_file: null,
       tiled: null,
       slider_value: 2,
+      slider2_value: 0.25,
     }
   }
 
@@ -52,6 +53,7 @@ class App extends Component {
       formdata.append('image',blob);
       console.log(this.state.slider_value)
       formdata.append('size',this.state.slider_value);
+      formdata.append('overlap',this.state.slider2_value);
       fetch('/api/tiled', {
         method: 'POST',
         body: formdata
@@ -107,7 +109,24 @@ class App extends Component {
                 color='secondary'
                 onChangeCommitted = { (e, value) => this.setState(
                   {slider_value: value}, 
-                  console.log(this.state.slider_value)
+                  this.onClick()
+                  // console.log(this.state.slider_value)
+                  )}
+                  />
+          <Slider 
+                defaultValue={0.25}
+                // getAriaValueText={valuetext}
+                step={0.05}
+                valueLabelDisplay="auto"
+                // marks={marks}
+                max={0.5}
+                min ={0}
+                // size='large'
+                color='secondary'
+                onChangeCommitted = { (e, value) => this.setState(
+                  {slider2_value: value}, 
+                  this.onClick()
+                  // console.log(this.state.slider2_value)
                   )}
               />
           </Box>
