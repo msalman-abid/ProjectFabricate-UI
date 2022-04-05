@@ -92,8 +92,8 @@ def predict():
 def augment_me():
 
     file = request.files['image']
-    style = request.form['style']
-    retrieval = request.form['retrieval']
+    style = int(request.form['style'])
+    retrieval = int(request.form['retrieval'])
     image = Image.open(file)
     new_image = Image.new("RGBA", image.size, "WHITE") # Create a white rgba background
     new_image.paste(image, (0, 0), image)              # Paste the image on the background. Go to the links given below for details.
@@ -103,6 +103,8 @@ def augment_me():
     img = np.array(new_image)
     img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
 
+    print(style, bool(style))
+    print(retrieval, bool(retrieval))
     img = augment(img, bool(retrieval), bool(style))
     print("[+] Image augmentation successful!")
     rawBytes = io.BytesIO()

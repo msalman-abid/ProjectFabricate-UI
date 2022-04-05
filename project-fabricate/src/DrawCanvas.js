@@ -54,10 +54,11 @@ class DrawCanvas extends Component {
             const file = new File([blob], "image.png");
             var formdata = new FormData();
             formdata.append('image', file);
-            formdata.append('style',this.state.alignment);
-            formdata.append('retrieval', this.state.retrieval);
+            formdata.append('style',this.state.alignment == true ? 1 : 0);
+            formdata.append('retrieval', this.state.retrieval == true ? 1 : 0);
 
             console.log(formdata);
+            console.log(this.state.alignment);
             console.log(this.state.retrieval);
 
             fetch('/api/augment', {
