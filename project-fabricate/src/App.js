@@ -64,6 +64,7 @@ class App extends Component {
       formdata.append('image',blob);
       console.log(this.state.slider_value)
       formdata.append('size',this.state.slider_value);
+      // formdata.append('retrieval', this.)
       formdata.append('overlap',this.state.slider2_value);
       fetch('/api/tiled', {
         method: 'POST',
@@ -107,7 +108,9 @@ class App extends Component {
           {/* <Autoenc m_design={this.state.p_file}/> */}
         </div>
 
+            
         <div className = 'Row'>
+          
           <Box sx={{width: '25%'}}>
             <h3> Control Tile Size</h3>
           <Slider 
@@ -124,6 +127,7 @@ class App extends Component {
                   this.onClick()
                   // console.log(this.state.slider_value)
                   )}
+                  
                   />
           </Box>
 

@@ -1,22 +1,25 @@
 from .object_detection import object_detection
 from .retrieve import retrieval
-from .Patching import quilt
+# from binpacking import quilt
+from .New_patching import patch_img
 import os
 import shutil
+import numpy as np
+from PIL import Image
 
 
-def augment(img):
-    # num_block=input ("number of blocks you want :")
-    num_block=10
+def augment(img, objRetrieval, style):
+    patches=15
     path = os.getcwd()+"\\detected_objects"
     shutil.rmtree(path,ignore_errors=True)
     os.mkdir(path)
     object_detection(img)
-    # object_detection('Textures/sample5.png')
     retrieved=retrieval()
-    texture=quilt(retrieved, (int(num_block), int(num_block)),True)
-    # texture.show()
+    texture = patch_img(retrieved,patches,objRetrieval,style,5)
     return texture
-
+    
 if __name__ == "__main__":
-    augment()
+    img = Image.open("test.jpg")
+    augment(img).show()
+
+

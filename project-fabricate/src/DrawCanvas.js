@@ -2,6 +2,12 @@ import React, { Component } from "react";
 import { Button } from '@material-ui/core'
 import './DrawCanvas.css';
 import CanvasDraw from "react-canvas-draw";
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
+
 
 class DrawCanvas extends Component {
     state = {
@@ -11,6 +17,8 @@ class DrawCanvas extends Component {
         brushRadius: 1,
         lazyRadius: 1,
         hideGrid: true,
+        alignment: true,
+        retrieval: true,
       };
 
       backendPredict(img) {
@@ -20,6 +28,7 @@ class DrawCanvas extends Component {
         .then(blob => {
         var formdata = new FormData();
         formdata.append('image',blob);
+        
         console.log(formdata);
 
         fetch('/api/predict', {
@@ -35,7 +44,7 @@ class DrawCanvas extends Component {
           })
         })
       }
-
+      
       augment()
       {
         fetch(this.saveableCanvas.getDataURL())
@@ -45,8 +54,11 @@ class DrawCanvas extends Component {
             const file = new File([blob], "image.png");
             var formdata = new FormData();
             formdata.append('image', file);
+            formdata.append('style',this.state.alignment);
+            formdata.append('retrieval', this.state.retrieval);
 
             console.log(formdata);
+            console.log(this.state.retrieval);
 
             fetch('/api/augment', {
               method: 'POST',
@@ -99,6 +111,40 @@ class DrawCanvas extends Component {
 
           </div>
 
+
+
+          </div>
+            <div className="toggle">
+            <ToggleButtonGroup
+            color="primary"
+            value={this.state.alignment}
+            // exclusive
+            >
+        
+            <FormControlLabel 
+            control={
+              <Switch defaultChecked 
+              onChange={ (e, value) => this.setState(
+                {alignment: value})
+              }
+              />} 
+              
+            label= {this.state.alignment ? "Grid Augmentation" : "Random Augmentation"}/>
+
+            <FormControlLabel 
+            control={
+              <Switch defaultChecked 
+              onChange={ (e, value) => this.setState(
+                {retrieval: value})
+              }
+              />} 
+              
+            label= "Object Retrieval"/>
+
+          </ToggleButtonGroup>
+
+          </div>
+
           <Button style = {{background:'#ffd400'}} variant='contained' size='large' 
             onClick={() => {
               localStorage.setItem(
@@ -110,9 +156,6 @@ class DrawCanvas extends Component {
           >
             Submit
           </Button>
-
-
-          </div>
         </div>
         )
     }
