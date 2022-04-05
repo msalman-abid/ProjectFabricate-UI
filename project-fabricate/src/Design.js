@@ -12,8 +12,9 @@ function Design (props) {
 //   // }
 const onDownload = () => {
     const link = document.createElement("a");
-    link.download = `download.txt`;
-    link.href = "./download.txt";
+    var my_img = document.getElementById("final")
+    link.download = `download.png`;
+    link.href = my_img.src;
     link.click();
   };
     return (

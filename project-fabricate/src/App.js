@@ -12,11 +12,22 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 const marks = [
   {
     value: 0,
-    label: 'Original',
+    label: '1x1',
   },
   {
     value: 10,
     label: '10x10',
+  },
+];
+
+const marks2 = [
+  {
+    value: 0,
+    label: '0',
+  },
+  {
+    value: 0.5,
+    label: '0.5',
   },
 ];
 
@@ -97,7 +108,8 @@ class App extends Component {
         </div>
 
         <div className = 'Row'>
-          <Box sx={{width: '50%'}}>
+          <Box sx={{width: '25%'}}>
+            <h3> Control Tile Size</h3>
           <Slider 
                 defaultValue={2}
                 // getAriaValueText={valuetext}
@@ -113,12 +125,20 @@ class App extends Component {
                   // console.log(this.state.slider_value)
                   )}
                   />
+          </Box>
+
+          <div className="button">
+          <Button style = {{color:'#282c34'}} variant='contained' size='large' onClick={this.onClick}> Show Tile</Button>
+          </div>
+          <Box sx={{width: '25%'}}>
+
+          <h3> Control Overlap</h3>
           <Slider 
                 defaultValue={0.25}
                 // getAriaValueText={valuetext}
                 step={0.05}
                 valueLabelDisplay="auto"
-                // marks={marks}
+                marks={marks2}
                 max={0.5}
                 min ={0}
                 // size='large'
@@ -130,9 +150,6 @@ class App extends Component {
                   )}
               />
           </Box>
-          <div className="button">
-          <Button style = {{color:'#282c34'}} variant='contained' size='large' onClick={this.onClick}> Show Tile</Button>
-          </div>
         </div>
         <img className='tiled' src={this.state.tiled} ></img>
 
