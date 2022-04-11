@@ -1,10 +1,9 @@
 import React, { Component } from "react";
-import { Button } from '@material-ui/core'
+import { Button, Drawer } from '@material-ui/core'
 import './Sketch.css';
 import * as tf from '@tensorflow/tfjs';
 import SlidingPane from "react-sliding-pane";
 import "react-sliding-pane/dist/react-sliding-pane.css";
-
 
 
 
@@ -70,8 +69,6 @@ class Sketch extends Component {
         })
       }
 
-
-
       render() {
         return (
           <div>
@@ -101,23 +98,40 @@ class Sketch extends Component {
             </Button>
             </div>
 
+            <Drawer
+            anchor={"left"}
+            open={this.state.isPaneOpen}
+            onClose={
+              (event) => {
+                if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+                  return;
+                }
+            
+                this.setState({isPaneOpen: false});
+              }
+            }
+          >
+            {'Hello'}
+  
+          </Drawer>
+
+            {/* 
             <SlidingPane
               className="some-custom-class"
               overlayClassName="some-custom-overlay-class"
               isOpen={this.state.isPaneOpen}
-              // title="Hey, it is optional pane title.  I can be React component too."
+              title="Hey, it is optional pane title.  I can be React component too."
               // subtitle="Optional subtitle."
               from="left"
               width="25%"
               onRequestClose={() => {
                 this.setState({ isPaneOpen: false });
               }}
+              
 
               
             >
-
-              
-            </SlidingPane>
+            </SlidingPane> */}
 
           </div>
 
