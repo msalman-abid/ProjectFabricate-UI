@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import { Button } from '@material-ui/core'
 import './Sketch.css';
 import * as tf from '@tensorflow/tfjs';
+import SlidingPane from "react-sliding-pane";
+import "react-sliding-pane/dist/react-sliding-pane.css";
+
 
 
 
@@ -13,6 +16,7 @@ class Sketch extends Component {
         this.state = {
           file: this.props.m_file,
           finalimg: null,
+          isPaneOpen: false,
         }
         this.handleChange = this.handleChange.bind(this)
       }
@@ -60,6 +64,12 @@ class Sketch extends Component {
           })
       }
 
+      getRecommendedSketches(){
+        fetch('/api/recomm_sketch', {
+          method: 'GET',
+        })
+      }
+
 
 
       render() {
@@ -84,8 +94,30 @@ class Sketch extends Component {
                   onChange={this.handleChange}
                 />
               </Button>
+
+              <Button style = {{background:'#ffd400'}} variant='contained' size='large' 
+            onClick = {() => this.setState({isPaneOpen: true}, this.getRecommendedSketches())}>
+              Recommended 
+            </Button>
             </div>
 
+            <SlidingPane
+              className="some-custom-class"
+              overlayClassName="some-custom-overlay-class"
+              isOpen={this.state.isPaneOpen}
+              // title="Hey, it is optional pane title.  I can be React component too."
+              // subtitle="Optional subtitle."
+              from="left"
+              width="25%"
+              onRequestClose={() => {
+                this.setState({ isPaneOpen: false });
+              }}
+
+              
+            >
+
+              
+            </SlidingPane>
 
           </div>
 

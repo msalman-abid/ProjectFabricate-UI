@@ -40,6 +40,7 @@ class App extends Component {
       tiled: null,
       slider_value: 2,
       slider2_value: 0.25,
+      
     }
   }
 
@@ -92,6 +93,10 @@ class App extends Component {
             Project Fabricate
           </p>
         </header>
+
+    
+
+
         <div className='Components'>
           <DrawCanvas className="canvas" aCallback = {this.callbackAugment} pCallback={this.callbackFunction}/>
           

@@ -1,4 +1,5 @@
 
+from matplotlib import image
 from numpy import asarray
 import numpy as np
 from datetime import datetime
@@ -19,11 +20,8 @@ def isRectangleOverlap(R1, R2):
     else:
         return True
 
-
-def patch_img(image_path, num_block, retrieval=True, linewise=False, size=5):
-    img = np.ones((2000, 2000, 3), dtype="uint8")
-    img.fill(255)
-    h, w, _ = img.shape
+# Drawn on UI
+def total_images_drawn(image_path,retrieval=False):
     images = []
     if retrieval:
         for i in image_path[:4]:
@@ -33,13 +31,29 @@ def patch_img(image_path, num_block, retrieval=True, linewise=False, size=5):
     for i in glob.iglob(f'{folder}/*'):
         images.append(i)
 
-    shapes = []
-    if retrieval:
-        shape = 'Shapes'
-        for i in glob.iglob(f'{shape}/*'):
-            object_detection(i)
-            shapes.append(i)
+    # shapes = []
+    # if retrieval:
+    #     shape = 'Shapes'
+    #     for i in glob.iglob(f'{shape}/*'):
+    #         object_detection(i)
+    #         shapes.append(i)
+    return images
 
+# Selected from UI
+def total_images_selected(image_path):
+    images = []
+    for i in image_path:
+        object_detection(i)
+    folder = os.getcwd()+'\\detected_objects'
+    for i in glob.iglob(f'{folder}/*'):
+        images.append(i)
+    return images
+
+def augmentation(images, num_block, linewise=False, size=5):
+    img = np.ones((2000, 2000, 3), dtype="uint8")
+    img.fill(255)
+    h, w, _ = img.shape
+    
     if linewise == True:
 
         block_size = round(img.shape[0]/size)
@@ -71,9 +85,9 @@ def patch_img(image_path, num_block, retrieval=True, linewise=False, size=5):
     else:
         num_block = round(img.shape[0]**2/600**2)-1
         overlapping = []
-        leng = num_block + random.randint(5, 8) if retrieval else num_block
-        shape_choice = random.choice(shapes) if retrieval else None
-        for i in range(leng):
+        # leng = num_block + random.randint(5, 8) if retrieval else num_block
+        # shape_choice = random.choice(shapes) if retrieval else None
+        for i in range(num_block):
             print(i)
             if i <= num_block:
                 choice = random.choice(images)
@@ -100,12 +114,12 @@ def patch_img(image_path, num_block, retrieval=True, linewise=False, size=5):
                     patch = cv2.resize(patch, (size, size),
                                        interpolation=cv2.INTER_AREA)
 
-            else:
-                patch = cv2.imread(shape_choice, cv2.IMREAD_UNCHANGED)
-                patch = Image.fromarray(patch)
-                patch = resizeimage.resize_cover(patch, [200, 200])
-                patch = patch.filter(ImageFilter.EDGE_ENHANCE_MORE)
-                patch = asarray(patch)
+            # else:
+            #     patch = cv2.imread(shape_choice, cv2.IMREAD_UNCHANGED)
+            #     patch = Image.fromarray(patch)
+            #     patch = resizeimage.resize_cover(patch, [200, 200])
+            #     patch = patch.filter(ImageFilter.EDGE_ENHANCE_MORE)
+            #     patch = asarray(patch)
             idx = patch[:, :, 3] == 255
             p_h, p_w, _ = patch.shape
             h, w, _ = img.shape

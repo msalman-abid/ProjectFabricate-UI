@@ -15,16 +15,18 @@ def make_square(im, min_size=224, fill_color=(255, 255, 255)):
     new_im = Image.new('RGB', (size, size), fill_color)
     new_im.paste(im, (int((size - x) / 2), int((size - y) / 2)))
     return new_im
+
 class FeatureExtractor:
     def __init__(self):
         # Use VGG-16 as the architecture and ImageNet for the weight
         base_model = VGG16(weights='imagenet')
         # Customize the model to return features from fully-connected layer
         self.model = Model(inputs=base_model.input, outputs=base_model.get_layer('fc1').output)
+
     def extract(self, img):
         # Resize the image
         img=make_square(img)
-        # img = img.resize((224, 224))
+        img = img.resize((224, 224))
 
         # Convert the image color space
         img = img.convert('RGB')

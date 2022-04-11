@@ -19,5 +19,9 @@ input{
 
 .btn{
     padding-top: 3%;
+    /* padding-left: 2%; */
+}
+.recommended{
+    padding-left: 2%;
 }
 

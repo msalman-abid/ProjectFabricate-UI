@@ -8,6 +8,9 @@ import base64
 import cv2
 from skimage import transform
 from texturizing import tile, img2tex
+import glob
+from pathlib import Path
+import random
 
 from tensorflow.keras.models import load_model
 import tensorflow as tf
@@ -90,6 +93,10 @@ def predict():
 
 @app.route('/api/augment', methods=['POST'])
 def augment_me():
+    import shutil
+    path = os.getcwd()+"\\detected_objects"
+    shutil.rmtree(path,ignore_errors=True)
+    os.mkdir(path)
 
     file = request.files['image']
     style = int(request.form['style'])
@@ -161,6 +168,26 @@ def tiled():
     img_base64 = base64.b64encode(rawBytes.read())
     return {'status':str(img_base64), 'tiled': True}
 
+
+@app.route('/api/recomm_sketch', methods=['GET'])
+def recomm_sketch():
+    import shutil
+    path = os.getcwd()+"\\detected_objects"
+    shutil.rmtree(path,ignore_errors=True)
+    os.mkdir(path)
+    paths = glob.glob(os.getcwd()+"\\flowers_quilting\\sketchy\\*.png")
+    selected_paths = random.sample(paths, 10)
+    for i in selected_paths:
+        try:
+            shutil.copy(i, path)
+        except:
+            print("Error")
+    # for image_path in selected_paths:
+    #     encoded_imges.append(str(get_image(image_path)))
+    # for i in images['total']:
+    #     images['result'+ str(i)] = encoded_imges[i]
+    # return images
+    return {'-_-': 'bye'}
 
 if __name__ == '__main__':
     app.run()    
