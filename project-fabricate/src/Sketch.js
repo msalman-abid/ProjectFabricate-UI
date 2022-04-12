@@ -113,9 +113,6 @@ class Sketch extends Component {
           })
       }
 
-
-      
-
       render() {
         return (
           <div>
@@ -138,11 +135,12 @@ class Sketch extends Component {
                   onChange={this.handleChange}
                 />
               </Button>
-
-              <Button style = {{background:'#ffd400'}} variant='contained' size='large' 
-            onClick = {() => this.setState({isPaneOpen: true}, this.getRecommendedSketches())}>
-              Recommended 
-            </Button>
+              <div className="btn">
+              <Button style={{ background: '#ffd400' }} variant='contained' size='large'
+                onClick={() => this.setState({ isPaneOpen: true }, this.getRecommendedSketches())}>
+                View Recommendations
+              </Button>
+              </div>
             </div>
 
             <Drawer
@@ -160,11 +158,8 @@ class Sketch extends Component {
             >
               {/*  🐣 work on css for this */}
 
-              <Typography variant="h6">Recommended Objects</Typography>
-              <Button style = {{background:'#ffd400'}} variant='contained' size='small' 
-              onClick={() => this.handleRecommendation()}>
-              Submit 
-            </Button>
+
+              <h3 >Recommended Objects</h3>
 
               <div className="imgs-div">
 
@@ -218,7 +213,12 @@ class Sketch extends Component {
                   <Checkbox id="9" />
                 </div>
               </div>
-
+              <div className='submit_btn'>
+              <Button style = {{background:'#ffd400'}} variant='contained' size='medium' 
+              onClick={() => this.handleRecommendation()}>
+              Submit 
+            </Button>
+            </div>
             </Drawer>
 
           </div>

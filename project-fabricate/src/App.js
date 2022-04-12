@@ -88,19 +88,15 @@ class App extends Component {
             Project Fabricate
           </p>
         </header>
-
-    
-
-
         <div className='Components'>
           <DrawCanvas className="canvas" aCallback = {this.callbackAugment} pCallback={this.callbackFunction}/>
-          
+          <div className="arrow">
           <ArrowForwardIosIcon fontSize="large" style={{ color: '#ffd400' }} />
-
+          </div>
           <Sketch pCallback = {this.callbackFunction} m_file={this.state.a_file} />
-          
+          <div className="arrow">
           <ArrowForwardIosIcon fontSize="large" style={{ color: '#ffd400' }} />
-
+          </div>
           <Design m_file={this.state.p_file}/>
 
           {/* <ArrowForwardIosIcon fontSize="large" style={{ color: '#ffd400' }} /> */}

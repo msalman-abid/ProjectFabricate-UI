@@ -47,13 +47,6 @@ app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024 # 16 MB
 print("[+] Server started succesfully.")
 
-# SAE = None
-# try:
-#     SAE = SwAeController("floral_default")
-#     print("[+] SUCCESS")
-# except Exception as e:
-#     print(e)
-
 @app.route('/')
 def main():
     return "Hello World"

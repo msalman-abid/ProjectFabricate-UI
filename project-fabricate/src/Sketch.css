@@ -36,6 +36,7 @@ input{
     display: flex;
     flex-direction: column;
     padding-bottom: 5%;
+    padding-right: 5%;
 }
 
 .elements{
@@ -45,8 +46,14 @@ input{
     justify-content: center;
     padding-left: 10%;
     padding-top: 10%;
+
 }
-/* .selections-div{
-    display: flex;
-    flex-direction: column;
-} */
+.submit_btn{
+    
+    padding-bottom: 5%;
+    padding-left: 30%;
+}
+
+h3{
+    text-align: center;
+}

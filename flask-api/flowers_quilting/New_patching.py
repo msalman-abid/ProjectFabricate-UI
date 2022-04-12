@@ -103,9 +103,7 @@ def patchStyle(img, images):
     for i in range(num_block):
         if i <= num_block:
             choice = random.choice(images)
-            print(choice)
             patch = cv2.imread(choice, cv2.IMREAD_UNCHANGED)
-            print(patch.shape)
 
 
             patch = randomRotation(patch)

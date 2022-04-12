@@ -1,7 +1,7 @@
 from .object_detection import object_detection
 from .retrieve import retrieval
 # from binpacking import quilt
-from .New_patching import augmentation, total_images_selected, total_images_drawn
+from .New_patching import augmentation, total_images_drawn
 from .transparent import convertImage
 import os
 import shutil
@@ -23,7 +23,6 @@ def augment(drawnImg, objRetrieval, style, draw=True):
             tmp_img = convertImage(tmp_img)
             tmp_img.save(elem_path)
 
-    print(images, draw)
     texture = augmentation(images, num_block, style)
     return texture
     
