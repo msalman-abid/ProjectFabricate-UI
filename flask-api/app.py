@@ -34,7 +34,7 @@ def load_image(file,size=[256,256]):
     # pixels = np.expand_dims(pixels, 0)
     return pixels
 
-model = load_model('./Updated_ImagetoImage.h5')
+# model = load_model('./Updated_ImagetoImage.h5')
 print("[+] Model loaded successfully.")
 
 
