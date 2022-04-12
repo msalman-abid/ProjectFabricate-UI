@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Button, Drawer, Typography, Checkbox } from '@material-ui/core'
 import './Sketch.css';
-import * as tf from '@tensorflow/tfjs';
 import "react-sliding-pane/dist/react-sliding-pane.css";
 
 
@@ -65,15 +64,16 @@ class Sketch extends Component {
           method: 'GET',
         }).then(data => data.json()
         ).then(result =>{
-          var total = parseInt(result['total'])
+          var total = parseInt(result['total']);
+          let tempArray = new Array(10);
           for(var i=0; i< total; i++){
-            let tempArray = this.state.imgArray.slice()
-            let keyString = 'result'.concat(toString(i))
-            tempArray[i] = result[keyString]
-              this.setState({
-                imgArray : tempArray              
-              })
+            let keyString = "result" + i.toString();
+            var bytestring = result[keyString];
+            let tmp_img = bytestring.split('\'')[1];
+            tempArray[i] = 'data:image/jpeg;base64,' + tmp_img;
           }
+          this.setState({imgArray : tempArray});
+
         })
       }
       
@@ -126,28 +126,53 @@ class Sketch extends Component {
               <div className="imgs-div">
 
                 <div className="elements">
-                  <img src={this.state.imgArray[0]} height={200} width={200} />
+                  <img src={this.state.imgArray[0]} height={200} width={200} alt="Sorry :("/>
                   <Checkbox id="0" />
                 </div>
 
                 <div className="elements">
-                  <img src={this.state.imgArray[1]} height={200} width={200} />
+                  <img src={this.state.imgArray[1]} height={200} width={200} alt="Sorry :("/>
                   <Checkbox id="1" />
                 </div>
 
                 <div className="elements">
-                  <img src={this.state.imgArray[2]} height={200} width={200} />
+                  <img src={this.state.imgArray[2]} height={200} width={200} alt="Sorry :("/>
                   <Checkbox id="2" />
                 </div>
 
                 <div className="elements">
-                  <img src={this.state.imgArray[3]} height={200} width={200} />
+                  <img src={this.state.imgArray[3]} height={200} width={200} alt="Sorry :("/>
                   <Checkbox id="3" />
                 </div>
 
                 <div className="elements">
-                  <img src={this.state.imgArray[4]} height={200} width={200} />
+                  <img src={this.state.imgArray[4]} height={200} width={200} alt="Sorry :("/>
                   <Checkbox id="4" />
+                </div>
+ 
+                <div className="elements">
+                  <img src={this.state.imgArray[0]} height={200} width={200} alt="Sorry :("/>
+                  <Checkbox id="5" />
+                </div>
+
+                <div className="elements">
+                  <img src={this.state.imgArray[1]} height={200} width={200} alt="Sorry :("/>
+                  <Checkbox id="6" />
+                </div>
+
+                <div className="elements">
+                  <img src={this.state.imgArray[2]} height={200} width={200} alt="Sorry :("/>
+                  <Checkbox id="7" />
+                </div>
+
+                <div className="elements">
+                  <img src={this.state.imgArray[3]} height={200} width={200} alt="Sorry :("/>
+                  <Checkbox id="8" />
+                </div>
+
+                <div className="elements">
+                  <img src={this.state.imgArray[4]} height={200} width={200} alt="Sorry :("/>
+                  <Checkbox id="9" />
                 </div>
               </div>
 
