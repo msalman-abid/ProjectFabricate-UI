@@ -11,7 +11,7 @@ def object_detection(path):
     image = None
     retrieved = False
 
-    if path == None:
+    if type(path) == type(None):
         return
 
     if type(path) == str:
