@@ -11,6 +11,7 @@ from texturizing import tile, img2tex
 import glob
 from pathlib import Path
 import random
+import shutil
 
 from tensorflow.keras.models import load_model
 import tensorflow as tf
@@ -171,12 +172,13 @@ def tiled():
 
 @app.route('/api/recomm_sketch', methods=['GET'])
 def recomm_sketch():
-    import shutil
+    
+    total = 10
     path = os.getcwd()+"\\detected_objects"
     shutil.rmtree(path,ignore_errors=True)
     os.mkdir(path)
     paths = glob.glob(os.getcwd()+"\\flowers_quilting\\sketchy\\*.png")
-    selected_paths = random.sample(paths, 10)
+    selected_paths = random.sample(paths, total)
     for i in selected_paths:
         try:
             shutil.copy(i, path)
@@ -187,9 +189,16 @@ def recomm_sketch():
     # for i in images['total']:
     #     images['result'+ str(i)] = encoded_imges[i]
     # return images
-    return {'-_-': 'bye'}
+    images = {'-_-': 'bye', 'total': total}
+    paths = glob.glob(os.getcwd()+"\\detected_objects\\*")
+    for i, elem in enumerate(paths):
+        temp_img = Image.open(elem)
+        rawBytes = io.BytesIO()
+        temp_img.save(rawBytes, "JPEG")
+        rawBytes.seek(0)
+        img_base64 = base64.b64encode(rawBytes.read())
+        images['result'+str(i)] = str(img_base64)
+    return images
 
 if __name__ == '__main__':
-    app.run()    
-
-
+    app.run()

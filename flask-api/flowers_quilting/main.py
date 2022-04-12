@@ -23,5 +23,3 @@ def augment(drawnImg, objRetrieval, style, draw=True):
 if __name__ == "__main__":
     drawnImg = Image.open("test.jpg")
     augment(drawnImg).show()
-
-

@@ -15,6 +15,7 @@ class Sketch extends Component {
           file: this.props.m_file,
           finalimg: null,
           isPaneOpen: false,
+          imgArray: new Array(10).fill(null),
         }
         this.handleChange = this.handleChange.bind(this)
       }
@@ -62,6 +63,17 @@ class Sketch extends Component {
       getRecommendedSketches(){
         fetch('/api/recomm_sketch', {
           method: 'GET',
+        }).then(data => data.json()
+        ).then(result =>{
+          var total = parseInt(result['total'])
+          for(var i=0; i< total; i++){
+            let tempArray = this.state.imgArray.slice()
+            let keyString = 'result'.concat(toString(i))
+            tempArray[i] = result[keyString]
+              this.setState({
+                imgArray : tempArray              
+              })
+          }
         })
       }
       
@@ -114,69 +126,32 @@ class Sketch extends Component {
               <div className="imgs-div">
 
                 <div className="elements">
-                  <img src={null} height={200} width={200} />
+                  <img src={this.state.imgArray[0]} height={200} width={200} />
                   <Checkbox id="0" />
                 </div>
 
                 <div className="elements">
-                  <img src={null} height={200} width={200} />
-                  <Checkbox id="0" />
+                  <img src={this.state.imgArray[1]} height={200} width={200} />
+                  <Checkbox id="1" />
                 </div>
 
                 <div className="elements">
-                  <img src={null} height={200} width={200} />
-                  <Checkbox id="0" />
+                  <img src={this.state.imgArray[2]} height={200} width={200} />
+                  <Checkbox id="2" />
                 </div>
 
                 <div className="elements">
-                  <img src={null} height={200} width={200} />
-                  <Checkbox id="0" />
+                  <img src={this.state.imgArray[3]} height={200} width={200} />
+                  <Checkbox id="3" />
                 </div>
 
                 <div className="elements">
-                  <img src={null} height={200} width={200} />
-                  <Checkbox id="0" />
+                  <img src={this.state.imgArray[4]} height={200} width={200} />
+                  <Checkbox id="4" />
                 </div>
-{/*                 
-                  <img src={null} height={200} width={200} />
-                  <img src={null} height={200} width={200} />
-                  <img src={null} height={200} width={200} />
-                  <img src={null} height={200} width={200} />
-                  <img src={null} height={200} width={200} />
-                  <img src={null} height={200} width={200} />
-                  <img src={null} height={200} width={200} />
-                  <img src={null} height={200} width={200} />
-                  <img src={null} height={200} width={200} /> */}
-
               </div>
 
-                {/* <div className="selections-div">
-                  <Checkbox id="0" />
-                  <Checkbox id="0" />
-                  <Checkbox id="0" />
-                  <Checkbox id="0" />
-                </div> */}
-
-
             </Drawer>
-
-            {/* 
-            <SlidingPane
-              className="some-custom-class"
-              overlayClassName="some-custom-overlay-class"
-              isOpen={this.state.isPaneOpen}
-              title="Hey, it is optional pane title.  I can be React component too."
-              // subtitle="Optional subtitle."
-              from="left"
-              width="25%"
-              onRequestClose={() => {
-                this.setState({ isPaneOpen: false });
-              }}
-              
-
-              
-            >
-            </SlidingPane> */}
 
           </div>
 
@@ -186,53 +161,4 @@ class Sketch extends Component {
 
 export default Sketch;
 
-const itemData = [
-  {
-    img: 'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e',
-    title: 'Breakfast',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d',
-    title: 'Burger',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1522770179533-24471fcdba45',
-    title: 'Camera',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c',
-    title: 'Coffee',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1533827432537-70133748f5c8',
-    title: 'Hats',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62',
-    title: 'Honey',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1516802273409-68526ee1bdd6',
-    title: 'Basketball',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1518756131217-31eb79b20e8f',
-    title: 'Fern',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1597645587822-e99fa5d45d25',
-    title: 'Mushrooms',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1567306301408-9b74779a11af',
-    title: 'Tomato basil',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1471357674240-e1a485acb3e1',
-    title: 'Sea star',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1589118949245-7d38baf380d6',
-    title: 'Bike',
-  },
-];
+
