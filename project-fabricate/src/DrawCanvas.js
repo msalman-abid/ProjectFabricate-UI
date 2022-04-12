@@ -57,7 +57,6 @@ class DrawCanvas extends Component {
             formdata.append('style',this.state.alignment == true ? 1 : 0);
             formdata.append('retrieval', this.state.retrieval == true ? 1 : 0);
 
-            console.log(formdata);
             console.log(this.state.alignment);
             console.log(this.state.retrieval);
 

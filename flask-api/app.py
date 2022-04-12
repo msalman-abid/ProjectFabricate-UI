@@ -35,7 +35,7 @@ def load_image(file,size=[256,256]):
     # pixels = np.expand_dims(pixels, 0)
     return pixels
 
-# model = load_model('./Updated_ImagetoImage.h5')
+model = load_model('./Updated_ImagetoImage.h5')
 print("[+] Model loaded successfully.")
 
 
@@ -72,7 +72,7 @@ def predict():
 
     pixels = load_image(img)
     prediction = model(pixels, training=True)
-    print("[+] Model prediction successful!")
+    print("[+] Model prediction successful!") 
     prediction = ((prediction + 1) / 2.0) * 255
 
     #################################################
@@ -94,7 +94,6 @@ def predict():
 
 @app.route('/api/augment', methods=['POST'])
 def augment_me():
-    import shutil
     path = os.getcwd()+"\\detected_objects"
     shutil.rmtree(path,ignore_errors=True)
     os.mkdir(path)
@@ -184,13 +183,9 @@ def recomm_sketch():
             shutil.copy(i, path)
         except:
             print("Error")
-    # for image_path in selected_paths:
-    #     encoded_imges.append(str(get_image(image_path)))
-    # for i in images['total']:
-    #     images['result'+ str(i)] = encoded_imges[i]
-    # return images
+
     images = {'-_-': 'bye', 'total': total}
-    paths = glob.glob(os.getcwd()+"\\detected_objects\\*")
+    paths = sorted(glob.glob(os.getcwd()+"\\detected_objects\\*"))
     for i, elem in enumerate(paths):
         temp_img = Image.open(elem)
         rawBytes = io.BytesIO()
@@ -199,6 +194,34 @@ def recomm_sketch():
         img_base64 = base64.b64encode(rawBytes.read())
         images['result'+str(i)] = str(img_base64)
     return images
+
+@app.route('/api/augment_recomm', methods=['POST'])
+def augment_recomm():
+    chkd_array = request.form['chkd_array']
+    chkd_array = eval(chkd_array)
+
+    paths = sorted(glob.glob(os.getcwd()+"\\detected_objects\\*"))
+
+    # delete items in paths where chkd_array is 0
+    for i, elem in enumerate(paths):
+        if chkd_array[i] == 0:
+            os.remove(elem)
+
+
+    # Args: img, retreival, linewise, drawn
+    img = augment(None, False, False, False) 
+    print("[+] Recommended image augmentation successful!")
+    
+    rawBytes = io.BytesIO()
+    img.save(rawBytes, "JPEG")
+    rawBytes.seek(0)
+    img_base64 = base64.b64encode(rawBytes.read())
+    
+    return {'status':str(img_base64), 'recc_augmented': True}
+
+
+
+
 
 if __name__ == '__main__':
     app.run()

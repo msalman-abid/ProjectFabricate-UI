@@ -11,6 +11,9 @@ def object_detection(path):
     image = None
     retrieved = False
 
+    if path == None:
+        return
+
     if type(path) == str:
         image = cv2.imread(path)
         retrieved = True

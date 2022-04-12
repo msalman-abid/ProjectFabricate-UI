@@ -15,6 +15,7 @@ class Sketch extends Component {
           finalimg: null,
           isPaneOpen: false,
           imgArray: new Array(10).fill(null),
+          total: 0,
         }
         this.handleChange = this.handleChange.bind(this)
       }
@@ -72,10 +73,47 @@ class Sketch extends Component {
             let tmp_img = bytestring.split('\'')[1];
             tempArray[i] = 'data:image/jpeg;base64,' + tmp_img;
           }
-          this.setState({imgArray : tempArray});
+          this.setState({imgArray : tempArray, total: total});
 
         })
       }
+
+      handleRecommendation(){
+        this.setState({isPaneOpen: false});
+
+        let chkd_array = Array(this.state.total).fill(0);
+        
+        for (let index = 0; index < this.state.total; index++) {
+          const str_id = index.toString();
+          const checkbox = document.getElementById(str_id);
+          if(checkbox.checked)
+            chkd_array[index] = 1;
+        }
+        
+        let formdata = new FormData();
+        formdata.append('chkd_array',chkd_array);
+        
+        fetch('/api/augment_recomm', {
+          method: 'POST',
+          body: formdata
+        }).then(data => data.json())
+          .then(result => {
+            var bytestring = result['status'];
+            var image = bytestring.split('\'')[1];
+            this.setState({
+              file: 'data:image/jpeg;base64,'+image,
+            },
+            () => {
+              fetch(this.state.file)
+              .then(res => res.blob())
+              .then(blob => {
+                this.backendPredict(blob);
+              })  
+            })
+          })
+      }
+
+
       
 
       render() {
@@ -121,7 +159,12 @@ class Sketch extends Component {
               }
             >
               {/*  🐣 work on css for this */}
+
               <Typography variant="h6">Recommended Objects</Typography>
+              <Button style = {{background:'#ffd400'}} variant='contained' size='small' 
+              onClick={() => this.handleRecommendation()}>
+              Submit 
+            </Button>
 
               <div className="imgs-div">
 
