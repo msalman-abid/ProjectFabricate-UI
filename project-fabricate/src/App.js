@@ -1,5 +1,4 @@
 import logo from './flower.png';
-import tiledimg from './tiledimg.png'
 import React, { Component } from "react";
 import './App.css';
 import DrawCanvas from './DrawCanvas'; 
@@ -52,9 +51,6 @@ class App extends Component {
     this.setState({a_file: data})
   }
   onClick = () => {
-    // this.setState({
-    //   tiled: tiledimg
-    // })
 
     // convert image to blob and send to server
     fetch(this.state.p_file)

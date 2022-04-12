@@ -25,3 +25,28 @@ input{
     padding-left: 2%;
 }
 
+/* .parent-div{
+    display: flex;
+    flex-direction: row;
+    align-items: left;
+    justify-content: left;
+} */
+
+.imgs-div{
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 5%;
+}
+
+.elements{
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: center;
+    padding-left: 10%;
+    padding-top: 10%;
+}
+/* .selections-div{
+    display: flex;
+    flex-direction: column;
+} */
