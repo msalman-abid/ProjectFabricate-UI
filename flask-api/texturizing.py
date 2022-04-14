@@ -3,6 +3,11 @@
 from math import floor
 from pathlib import Path
 from typing import Tuple
+import cv2
+import numpy as np
+import random
+from PIL import Image, ImageDraw
+import extcolors
 
 from PIL import Image  # importing with tweaked options
 
@@ -157,3 +162,62 @@ def tile(source: Image,
             new_im.paste(image, (w * x, h * y))
 
     return new_im
+
+def apparel_generation(pattern: Image, templatePath: str):
+
+    pattern = cv2.cvtColor(np.array(pattern), cv2.COLOR_RGB2BGR)
+    masked = cv2.imread(templatePath)
+
+    pattern=cv2.resize(pattern, (256,256),interpolation = cv2.INTER_AREA)
+    masked=cv2.resize(masked, (256,256),interpolation = cv2.INTER_AREA)
+
+    gray = cv2.cvtColor(masked, cv2.COLOR_BGR2GRAY)
+    thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_OTSU)[1]
+
+    result = pattern.copy()
+    result[thresh==0] = (255,255,255)
+    result = cv2.cvtColor(result, cv2.COLOR_BGR2RGB)
+    result = Image.fromarray(result)
+    return result
+
+def complementary_designs(img: Image, direction: str):
+    img = img.resize((256,256))
+    colors,_ = extcolors.extract_from_image(img)
+    final_img =Image.new('RGB',(256,256),colors[0][0])
+    draw_final_img = ImageDraw.Draw(final_img)
+    dimensions=256
+    spacing=[2,4]
+    if direction=='Checked' or direction=='Diagonal-Left' or direction=='Diagonal-Right':
+        dimensions=256*2
+    spacing=random.choice(spacing)
+    for i in range(0, dimensions, 15):
+        if i%spacing==0:
+            color=colors[1]
+        else:
+            color=colors[2]
+        if direction=='Vertical':
+            draw_final_img.line([(i, 0),(i,256)], width=3, 
+                    fill=color[0])
+        elif direction=='Horizontal':
+            draw_final_img.line([(0, i),(256,i)], width=3, 
+                    fill=color[0])
+        elif direction=='Diagonal-Left':
+            draw_final_img.line([(i, 0),(i-final_img.size[0],256)], width=2, 
+                    fill=color[0])
+        elif direction=='Diagonal-Right':
+            draw_final_img.line([(0, i-final_img.size[0]),(256,i)], width=2, 
+                    fill=color[0])
+        elif direction=='Checked':
+            draw_final_img.line([(0, i-final_img.size[0]),(256,i)], width=2, 
+                    fill=color[0])
+            draw_final_img.line([(i, 0),(i-final_img.size[0],256)], width=2, 
+                    fill=color[0])
+        elif direction=="Zig-Zag":
+            for i in range(0,256,10):
+                for j in range(0,256,10):
+                    # draw_final_img.line([(0, 0), (10,10),(20,0),(30,10),(40,0)], width=2, fill="green",joint="curve")
+                    draw_final_img.line([(j+10,i),(j+30,i)], width=2, fill="green",joint="curve")
+                    final_img.show()
+                    break
+
+    return final_img

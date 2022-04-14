@@ -1,12 +1,14 @@
 import logo from './flower.png';
 import React, { Component } from "react";
 import './App.css';
-import DrawCanvas from './DrawCanvas'; 
+import DrawCanvas from './DrawCanvas';
 import Sketch from './Sketch';
 import Design from './Design'
 import Autoenc from './Autoenc'
-import { Button, Slider, Box } from '@material-ui/core'
+import { Button, Slider, Box, Paper } from '@material-ui/core'
+import Carousel from 'react-material-ui-carousel'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import { flexbox } from '@mui/system';
 
 const marks = [
   {
@@ -31,7 +33,7 @@ const marks2 = [
 ];
 
 class App extends Component {
-  constructor(props){
+  constructor(props) {
     super(props)
     this.state = {
       a_file: null,
@@ -39,43 +41,68 @@ class App extends Component {
       tiled: null,
       slider_value: 2,
       slider2_value: 0.25,
-      
+      mask: null,
+      mask2: null,
+      cushion: null,
+      complementary: null,
+      complementary2: null,
+      complementary3: null,
+      complementary4: null,
+      complementary5: null,
+      mask_img: null,
+
     }
   }
 
   callbackFunction = (childData) => {
-    this.setState({p_file: childData});
+    this.setState({ p_file: childData });
   }
-  
-  callbackAugment = (data) =>{
-    this.setState({a_file: data})
+
+  callbackAugment = (data) => {
+    this.setState({ a_file: data })
   }
   onClick = () => {
 
     // convert image to blob and send to server
     fetch(this.state.p_file)
-    .then(res => res.blob())
-    .then(blob => {
-      
-      var formdata = new FormData();
-      formdata.append('image',blob);
-      console.log(this.state.slider_value)
-      formdata.append('size',this.state.slider_value);
-      // formdata.append('retrieval', this.)
-      formdata.append('overlap',this.state.slider2_value);
-      fetch('/api/tiled', {
-        method: 'POST',
-        body: formdata
-      }).then(data => data.json()) //recieve data from server
-        .then(result => {
-          var bytestring = result['status']; //extract from JSON
-          var image = bytestring.split('\'')[1];
-          this.setState({
-            //save base64 image to state
-            tiled: 'data:image/jpeg;base64,'+image 
+      .then(res => res.blob())
+      .then(blob => {
+
+        var formdata = new FormData();
+        formdata.append('image', blob);
+        console.log(this.state.slider_value)
+        formdata.append('size', this.state.slider_value);
+        // formdata.append('retrieval', this.)
+        formdata.append('overlap', this.state.slider2_value);
+        fetch('/api/tiled', {
+          method: 'POST',
+          body: formdata
+        }).then(data => data.json()) //recieve data from server
+          .then(result => {
+            var bytestring = result['status']; //extract from JSON
+            var image = bytestring.split('\'')[1];
+            var mask = result['mask'].split('\'')[1];
+            var mask2 = result['mask2'].split('\'')[1];
+            var cushion = result['cushion'].split('\'')[1];
+            var comp = result['complementary'].split('\'')[1];
+            var comp2 = result['complementary2'].split('\'')[1];
+            var comp3 = result['complementary3'].split('\'')[1];
+            var comp4 = result['complementary4'].split('\'')[1];
+            var comp5 = result['complementary5'].split('\'')[1];
+            this.setState({
+              //save base64 image to state
+              tiled: 'data:image/jpeg;base64,' + image,
+              mask: 'data:image/jpeg;base64,' + mask,
+              mask2: 'data:image/jpeg;base64,' + mask2,
+              cushion: 'data:image/jpeg;base64,' + cushion,
+              complementary: 'data:image/jpeg;base64,' + comp,
+              complementary2: 'data:image/jpeg;base64,' + comp2,
+              complementary3: 'data:image/jpeg;base64,' + comp3,
+              complementary4: 'data:image/jpeg;base64,' + comp4,
+              complementary5: 'data:image/jpeg;base64,' + comp5
+            })
           })
-        })
-    })
+      })
 
   }
 
@@ -89,69 +116,127 @@ class App extends Component {
           </p>
         </header>
         <div className='Components'>
-          <DrawCanvas className="canvas" aCallback = {this.callbackAugment} pCallback={this.callbackFunction}/>
-          <div className="arrow">
+          <DrawCanvas className="canvas" aCallback={this.callbackAugment} pCallback={this.callbackFunction} />
+
+            <div className="Arrow">
           <ArrowForwardIosIcon fontSize="large" style={{ color: '#ffd400' }} />
           </div>
-          <Sketch pCallback = {this.callbackFunction} m_file={this.state.a_file} />
-          <div className="arrow">
+          <Sketch pCallback={this.callbackFunction} m_file={this.state.a_file} />
+          <div className="Arrow">
           <ArrowForwardIosIcon fontSize="large" style={{ color: '#ffd400' }} />
           </div>
-          <Design m_file={this.state.p_file}/>
+
+          <Design m_file={this.state.p_file} />
 
           {/* <ArrowForwardIosIcon fontSize="large" style={{ color: '#ffd400' }} /> */}
-          
+
           {/* <Autoenc m_design={this.state.p_file}/> */}
         </div>
 
-            
-        <div className = 'Row'>
-          
-          <Box sx={{width: '25%'}}>
+
+        <h1> Image Tiling</h1>
+        <div className='Row'>
+
+          <Box sx={{ width: '25%' }}>
             <h3> Control Tile Size</h3>
-          <Slider 
-                defaultValue={2}
-                // getAriaValueText={valuetext}
-                step={1}
-                valueLabelDisplay="auto"
-                marks={marks}
-                max={10}
-                // size='large'
-                color='secondary'
-                onChangeCommitted = { (e, value) => this.setState(
-                  {slider_value: value}, 
-                  this.onClick()
-                  // console.log(this.state.slider_value)
-                  )}
-                  
-                  />
+            <Slider
+              defaultValue={2}
+              // getAriaValueText={valuetext}
+              step={1}
+              valueLabelDisplay="auto"
+              marks={marks}
+              max={10}
+              // size='large'
+              color='secondary'
+              onChangeCommitted={(e, value) => this.setState(
+                { slider_value: value },
+                this.onClick()
+                // console.log(this.state.slider_value)
+                )}
+                
+                />
           </Box>
 
           <div className="button">
-          <Button style = {{color:'#282c34'}} variant='contained' size='large' onClick={this.onClick}> Show Tile</Button>
+            <Button style={{ color: '#282c34' }} variant='contained' size='large' onClick={this.onClick}> Show Tile</Button>
           </div>
-          <Box sx={{width: '25%'}}>
+          <Box sx={{ width: '25%' }}>
 
-          <h3> Control Overlap</h3>
-          <Slider 
-                defaultValue={0.25}
-                // getAriaValueText={valuetext}
-                step={0.05}
-                valueLabelDisplay="auto"
-                marks={marks2}
-                max={0.5}
-                min ={0}
-                // size='large'
-                color='secondary'
-                onChangeCommitted = { (e, value) => this.setState(
-                  {slider2_value: value}, 
-                  this.onClick()
-                  // console.log(this.state.slider2_value)
-                  )}
-              />
+            <h3> Control Overlap</h3>
+            <Slider
+              defaultValue={0.25}
+              // getAriaValueText={valuetext}
+              step={0.05}
+              valueLabelDisplay="auto"
+              marks={marks2}
+              max={0.5}
+              min={0}
+              // size='large'
+              color='secondary'
+              onChangeCommitted={(e, value) => this.setState(
+                { slider2_value: value },
+                this.onClick()
+                // console.log(this.state.slider2_value)
+              )}
+            />
           </Box>
         </div>
-        <img className='tiled' src={this.state.tiled} ></img>
+
+        <div className="Row">
+          <Box
+            sx={{
+              
+              height: '100vmin',
+              width: '100vmin',
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+            >
+            <Paper hidden={this.state.tiled ? false : true} elevation={3}>
+              <img className='tiled' src={this.state.tiled} ></img>
+            </Paper>
+          </Box>
+
+        </div>
+
+        <h1>Complementary Designs</h1>
+        <Carousel>
+                <div>
+                    <img src={this.state.complementary} />
+                </div>
+                <div>
+                <img src={this.state.complementary2} />
+                </div>
+                <div>
+                <img src={this.state.complementary3} />
+                </div>
+                <div>
+                <img src={this.state.complementary4} />
+                </div>
+                <div>
+                <img src={this.state.complementary5} />
+                </div>
+            </Carousel>
+
+        <h1> Apparel Designs</h1>
+          <img  className="image" hidden={this.state.tiled ? false : true} id="mask" height="500" width="500" 
+          src= {this.state.mask_img}
+          onMouseOut={() => {
+            this.setState({
+              mask_img: this.state.mask
+            })
+          }}
+          onMouseEnter={() => {
+            this.setState({
+              mask_img: this.state.mask2
+            })
+          }}
+          >
+
+          </img>
+          <img  className="image" hidden={this.state.tiled ? false : true} id="cushion" height="500" width="500" src={this.state.cushion}></img>
+          {/* <img id="complementary" height="250" width="250" src={this.state.complementary}></img> */}
 
       </div>
     );

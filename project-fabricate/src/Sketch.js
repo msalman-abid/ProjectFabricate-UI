@@ -162,6 +162,12 @@ class Sketch extends Component {
               <h3 >Recommended Objects</h3>
 
               <div className="imgs-div">
+              <div className='submit_btn'>
+              <Button style = {{background:'#ffd400'}} variant='contained' size='medium' 
+              onClick={() => this.handleRecommendation()}>
+              Submit 
+            </Button>
+            </div>
 
                 <div className="elements">
                   <img src={this.state.imgArray[0]} height={200} width={200} alt="Sorry :("/>
@@ -213,12 +219,6 @@ class Sketch extends Component {
                   <Checkbox id="9" />
                 </div>
               </div>
-              <div className='submit_btn'>
-              <Button style = {{background:'#ffd400'}} variant='contained' size='medium' 
-              onClick={() => this.handleRecommendation()}>
-              Submit 
-            </Button>
-            </div>
             </Drawer>
 
           </div>

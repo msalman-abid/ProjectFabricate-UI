@@ -97,15 +97,13 @@ def gridStyle(images, size, img):
             img[y: y + block_size, x: x + block_size, :][idx] = (0, 0, 0)
     return img
 
-def patchStyle(img, images):
-    num_block = round(img.shape[0]**2/600**2)-1
+def patchStyle(img, images, num_block):
+    # num_block = round(img.shape[0]**2/600**2)-1
     overlapping = []
     for i in range(num_block):
         if i <= num_block:
             choice = random.choice(images)
             patch = cv2.imread(choice, cv2.IMREAD_UNCHANGED)
-
-
             patch = randomRotation(patch)
             patch = chooseSize(patch)
 
@@ -164,7 +162,7 @@ def augmentation(images, num_block, grid=False, size=5):
     if grid: 
         img = gridStyle(images, size, img)
     else:
-        img = patchStyle(img, images)
+        img = patchStyle(img, images, num_block)
     img = Image.fromarray(img)
     img = resizeimage.resize_cover(img, [256, 256])
     img = img.filter(ImageFilter.EDGE_ENHANCE_MORE)

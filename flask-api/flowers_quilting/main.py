@@ -19,9 +19,10 @@ def augment(drawnImg, objRetrieval, style, draw=True):
     else:
         images = glob.glob(os.getcwd()+"\\detected_objects\\*")
         for elem_path in images:
-            tmp_img = Image.open(elem_path)
-            tmp_img = convertImage(tmp_img)
-            tmp_img.save(elem_path)
+            object_detection(elem_path)
+            # tmp_img = Image.open(elem_path)
+            # tmp_img = convertImage(tmp_img)
+            # tmp_img.save(elem_path)
 
     texture = augmentation(images, num_block, style)
     return texture

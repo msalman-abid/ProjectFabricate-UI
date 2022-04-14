@@ -41,14 +41,20 @@
   flex-direction: row;
   justify-content: center;
 }
+.Arrow{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-bottom: 5%;
+}
 
 .Row{
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  padding-top: 2%;
-  padding-bottom: 2%;
+  /* padding-top: 2%; */
+  padding-bottom: 3%;
   /* padding-left: 15%; */
 }
 .button{
@@ -70,4 +76,18 @@ padding-top: 2%;
   to {
     transform: rotate(360deg);
   }
+}
+/* 
+.Apparel{
+  background-color: black;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding-left: 10%;
+  padding-bottom: 2%;
+} */
+
+.image{
+  padding-left: 5%;
 }

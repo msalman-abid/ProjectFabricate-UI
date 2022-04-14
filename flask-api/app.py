@@ -7,7 +7,7 @@ import numpy as np
 import base64
 import cv2
 from skimage import transform
-from texturizing import tile, img2tex
+from texturizing import tile, img2tex, apparel_generation, complementary_designs
 import glob
 from pathlib import Path
 import random
@@ -22,6 +22,12 @@ sys.path.append(os.path.dirname(SCRIPT_DIR))
 
 from flowers_quilting.main import augment
 
+def image_to_bytes(img):
+    rawBytes = io.BytesIO()
+    img.save(rawBytes, "JPEG")
+    rawBytes.seek(0)
+    img_base64 = base64.b64encode(rawBytes.read())
+    return img_base64
 
 def load_image(file,size=[256,256]):
     pixels = tf.convert_to_tensor(file)
@@ -77,8 +83,6 @@ def predict():
     # save image as jpg
     img.save('./test.jpg')
 
-    
-        
     rawBytes = io.BytesIO()
     img.save(rawBytes, "JPEG")
     rawBytes.seek(0)
@@ -136,7 +140,6 @@ def auto_enc():
 
     ### END ###
 
-
     print("[+] Image swapping successful!")
     rawBytes = io.BytesIO()
     tex_image.save(rawBytes, "JPEG")
@@ -154,12 +157,39 @@ def tiled():
     image = img2tex(image, float(overlap))
     image = tile(image, int(size), int(size))
 
+    img_base64 = image_to_bytes(image)
+
     print("[+] Image tiling successful!")
-    rawBytes = io.BytesIO()
-    image.save(rawBytes, "JPEG")
-    rawBytes.seek(0)
-    img_base64 = base64.b64encode(rawBytes.read())
-    return {'status':str(img_base64), 'tiled': True}
+
+    mask = apparel_generation(image, "templates\mask.png")
+    mask_base64 = image_to_bytes(mask)
+
+    mask2 = apparel_generation(image, "templates\mask3.png")
+    mask2_base64 = image_to_bytes(mask2)
+
+    cushion = apparel_generation(image, "templates\cushion2.png")
+    cushion_base64 = image_to_bytes(cushion)
+
+    comp = complementary_designs(image, "Vertical")
+    comp_base64 = image_to_bytes(comp)
+
+    comp2 = complementary_designs(image, "Horizontal")
+    comp2_base64 = image_to_bytes(comp2)
+
+    comp3 = complementary_designs(image, "Diagonal-Left")
+    comp3_base64 = image_to_bytes(comp3)
+
+    comp4 = complementary_designs(image, "Diagonal-Right")
+    comp4_base64 = image_to_bytes(comp4)
+
+    comp5 = complementary_designs(image, "Checked")
+    comp5_base64 = image_to_bytes(comp5)
+
+    return {'status':str(img_base64), 'tiled': True, \
+     'mask': str(mask_base64), 'mask2': str(mask2_base64), \
+        'cushion': str(cushion_base64), 'complementary': str(comp_base64), \
+        'complementary2': str(comp2_base64), 'complementary3': str(comp3_base64), 
+        'complementary4': str(comp4_base64), 'complementary5': str(comp5_base64)}
 
 
 @app.route('/api/recomm_sketch', methods=['GET'])
