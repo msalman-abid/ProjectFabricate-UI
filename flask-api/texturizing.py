@@ -166,6 +166,7 @@ def tile(source: Image,
 def apparel_generation(pattern: Image, templatePath: str):
 
     pattern = cv2.cvtColor(np.array(pattern), cv2.COLOR_RGB2BGR)
+    # pattenr = cv2.imread(pattern)
     masked = cv2.imread(templatePath)
 
     pattern=cv2.resize(pattern, (256,256),interpolation = cv2.INTER_AREA)
@@ -221,3 +222,15 @@ def complementary_designs(img: Image, direction: str):
                     break
 
     return final_img
+
+def post_processing(img: Image, choose):
+    if choose == 1:
+        pattern = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
+    elif choose == 2:
+        pattern = cv2.cvtColor(np.array(img), cv2.COLOR_BGR2HLS)
+    elif choose == 3:
+        pattern = cv2.cvtColor(np.array(img), cv2.COLOR_BGR2HSV)
+    elif choose == 4:
+        pattern = cv2.cvtColor(np.array(img), cv2.COLOR_BGR2LAB)
+    result = Image.fromarray(pattern)
+    return result

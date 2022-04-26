@@ -9,6 +9,7 @@ import { Button, Slider, Box, Paper } from '@material-ui/core'
 import Carousel from 'react-material-ui-carousel'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { flexbox } from '@mui/system';
+import {random, floor} from "mathjs";
 
 const marks = [
   {
@@ -50,7 +51,7 @@ class App extends Component {
       complementary4: null,
       complementary5: null,
       mask_img: null,
-
+      choose: 0,
     }
   }
 
@@ -61,26 +62,28 @@ class App extends Component {
   callbackAugment = (data) => {
     this.setState({ a_file: data })
   }
-  onClick = () => {
 
+  onClick = () => {
+    
     // convert image to blob and send to server
     fetch(this.state.p_file)
       .then(res => res.blob())
       .then(blob => {
-
+        
         var formdata = new FormData();
         formdata.append('image', blob);
         console.log(this.state.slider_value)
         formdata.append('size', this.state.slider_value);
+        formdata.append('choose', this.state.choose)
         // formdata.append('retrieval', this.)
         formdata.append('overlap', this.state.slider2_value);
         fetch('/api/tiled', {
           method: 'POST',
           body: formdata
         }).then(data => data.json()) //recieve data from server
-          .then(result => {
-            var bytestring = result['status']; //extract from JSON
-            var image = bytestring.split('\'')[1];
+        .then(result => {
+          var bytestring = result['status']; //extract from JSON
+          var image = bytestring.split('\'')[1];
             var mask = result['mask'].split('\'')[1];
             var mask2 = result['mask2'].split('\'')[1];
             var cushion = result['cushion'].split('\'')[1];
@@ -99,10 +102,19 @@ class App extends Component {
               complementary2: 'data:image/jpeg;base64,' + comp2,
               complementary3: 'data:image/jpeg;base64,' + comp3,
               complementary4: 'data:image/jpeg;base64,' + comp4,
-              complementary5: 'data:image/jpeg;base64,' + comp5
+              complementary5: 'data:image/jpeg;base64,' + comp5,
+              choose: 0
             })
           })
       })
+
+    }
+
+  colorOnClick = () => {
+    this.setState({ choose: floor(random() * 4) + 1}, 
+    () => {
+      this.onClick();
+    })
 
   }
 
@@ -127,13 +139,13 @@ class App extends Component {
           </div>
 
           <Design m_file={this.state.p_file} />
+          <div className="Arrow">
+          <ArrowForwardIosIcon fontSize="large" style={{ color: '#ffd400' }} />
+          </div>
 
-          {/* <ArrowForwardIosIcon fontSize="large" style={{ color: '#ffd400' }} /> */}
-
-          {/* <Autoenc m_design={this.state.p_file}/> */}
+          <Autoenc m_design={this.state.a_file}/>
         </div>
-
-
+        
         <h1> Image Tiling</h1>
         <div className='Row'>
 
@@ -197,26 +209,32 @@ class App extends Component {
               <img className='tiled' src={this.state.tiled} ></img>
             </Paper>
           </Box>
-
         </div>
+          <Button style={{ color: '#282c34' }} variant='contained' size='large' onClick={this.colorOnClick}> Change Color</Button>
+
 
         <h1>Complementary Designs</h1>
         <Carousel>
-                <div>
-                    <img src={this.state.complementary} />
-                </div>
-                <div>
-                <img src={this.state.complementary2} />
-                </div>
-                <div>
-                <img src={this.state.complementary3} />
-                </div>
-                <div>
-                <img src={this.state.complementary4} />
-                </div>
-                <div>
-                <img src={this.state.complementary5} />
-                </div>
+          <div>
+            <img src={this.state.tiled} width='256' height='256'/>
+            <img src={this.state.complementary} />
+          </div>
+          <div>
+            <img src={this.state.tiled} width='256' height='256' />
+            <img src={this.state.complementary2} />
+          </div>
+          <div>
+            <img src={this.state.tiled} width='256' height='256' />
+            <img src={this.state.complementary3} />
+          </div>
+          <div>
+            <img src={this.state.tiled} width='256' height='256' />
+            <img src={this.state.complementary4} />
+          </div>
+          <div>
+            <img src={this.state.tiled} width='256' height='256' />
+            <img src={this.state.complementary5} />
+          </div>
             </Carousel>
 
         <h1> Apparel Designs</h1>

@@ -7,7 +7,7 @@ import numpy as np
 import base64
 import cv2
 from skimage import transform
-from texturizing import tile, img2tex, apparel_generation, complementary_designs
+from texturizing import *
 import glob
 from pathlib import Path
 import random
@@ -149,14 +149,17 @@ def auto_enc():
 
 @app.route('/api/tiled', methods=['POST'])
 def tiled():
+
     file = request.files['image']
     size = request.form['size']
     overlap = request.form['overlap']
+    choose = int(request.form['choose'])
     image = Image.open(file)
 
     image = img2tex(image, float(overlap))
     image = tile(image, int(size), int(size))
-
+    if choose != 0:
+        image = post_processing(image, choose)
     img_base64 = image_to_bytes(image)
 
     print("[+] Image tiling successful!")
@@ -184,6 +187,11 @@ def tiled():
 
     comp5 = complementary_designs(image, "Checked")
     comp5_base64 = image_to_bytes(comp5)
+
+    print("[+] Apparel Generated!")
+
+
+    
 
     return {'status':str(img_base64), 'tiled': True, \
      'mask': str(mask_base64), 'mask2': str(mask2_base64), \

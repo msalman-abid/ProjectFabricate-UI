@@ -4,8 +4,6 @@ import './Sketch.css';
 import "react-sliding-pane/dist/react-sliding-pane.css";
 
 
-
-
 class Sketch extends Component {
 
     constructor(props){
