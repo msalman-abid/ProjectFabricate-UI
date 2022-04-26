@@ -163,20 +163,23 @@ def tile(source: Image,
 
     return new_im
 
-def apparel_generation(pattern: Image, templatePath: str):
+def apparel_generation(pattern: Image, templatePath: str, black = True):
 
     pattern = cv2.cvtColor(np.array(pattern), cv2.COLOR_RGB2BGR)
-    # pattenr = cv2.imread(pattern)
     masked = cv2.imread(templatePath)
 
     pattern=cv2.resize(pattern, (256,256),interpolation = cv2.INTER_AREA)
     masked=cv2.resize(masked, (256,256),interpolation = cv2.INTER_AREA)
-
-    gray = cv2.cvtColor(masked, cv2.COLOR_BGR2GRAY)
-    thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_OTSU)[1]
-
-    result = pattern.copy()
-    result[thresh==0] = (255,255,255)
+    if black:
+        thresh = cv2.threshold(masked,255, 0, cv2.THRESH_TRUNC)[1]
+        result = pattern.copy()
+        result= np.where(thresh==255, pattern, thresh)
+        result[result==[36,28,237]]=255
+    else:
+        gray = cv2.cvtColor(masked, cv2.COLOR_BGR2GRAY)
+        thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_OTSU)[1]
+        result = pattern.copy()
+        result[thresh==0] = (255,255,255)
     result = cv2.cvtColor(result, cv2.COLOR_BGR2RGB)
     result = Image.fromarray(result)
     return result

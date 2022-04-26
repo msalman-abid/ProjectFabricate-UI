@@ -164,14 +164,20 @@ def tiled():
 
     print("[+] Image tiling successful!")
 
-    mask = apparel_generation(image, "templates\mask.png")
+    mask = apparel_generation(image, "templates\mask2.png")
     mask_base64 = image_to_bytes(mask)
 
-    mask2 = apparel_generation(image, "templates\mask3.png")
+    mask2 = apparel_generation(image, "templates\mask4.png")
     mask2_base64 = image_to_bytes(mask2)
 
-    cushion = apparel_generation(image, "templates\cushion2.png")
+    cushion = apparel_generation(image, "templates\cushion2.png", False)
     cushion_base64 = image_to_bytes(cushion)
+
+    slipper = apparel_generation(image, "templates\slipper.png")
+    slipper_base64 = image_to_bytes(slipper)
+
+    scrunchie = apparel_generation(image, "templates\scrunchie.png")
+    scrunchie_base64 = image_to_bytes(scrunchie)
 
     comp = complementary_designs(image, "Vertical")
     comp_base64 = image_to_bytes(comp)
@@ -195,7 +201,8 @@ def tiled():
 
     return {'status':str(img_base64), 'tiled': True, \
      'mask': str(mask_base64), 'mask2': str(mask2_base64), \
-        'cushion': str(cushion_base64), 'complementary': str(comp_base64), \
+        'cushion': str(cushion_base64), 'slipper' : str(slipper_base64), 
+        'scrunchie' : str(scrunchie_base64), 'complementary': str(comp_base64), \
         'complementary2': str(comp2_base64), 'complementary3': str(comp3_base64), 
         'complementary4': str(comp4_base64), 'complementary5': str(comp5_base64)}
 

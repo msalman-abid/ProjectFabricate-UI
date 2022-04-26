@@ -45,6 +45,8 @@ class App extends Component {
       mask: null,
       mask2: null,
       cushion: null,
+      slipper: null,
+      scrunchie: null,
       complementary: null,
       complementary2: null,
       complementary3: null,
@@ -87,6 +89,8 @@ class App extends Component {
             var mask = result['mask'].split('\'')[1];
             var mask2 = result['mask2'].split('\'')[1];
             var cushion = result['cushion'].split('\'')[1];
+            var slipper = result['slipper'].split('\'')[1];
+            var scrunchie = result['scrunchie'].split('\'')[1];
             var comp = result['complementary'].split('\'')[1];
             var comp2 = result['complementary2'].split('\'')[1];
             var comp3 = result['complementary3'].split('\'')[1];
@@ -98,6 +102,8 @@ class App extends Component {
               mask: 'data:image/jpeg;base64,' + mask,
               mask2: 'data:image/jpeg;base64,' + mask2,
               cushion: 'data:image/jpeg;base64,' + cushion,
+              slipper: 'data:image/jpeg;base64,' + slipper,
+              scrunchie: 'data:image/jpeg;base64,' + scrunchie,
               complementary: 'data:image/jpeg;base64,' + comp,
               complementary2: 'data:image/jpeg;base64,' + comp2,
               complementary3: 'data:image/jpeg;base64,' + comp3,
@@ -160,7 +166,7 @@ class App extends Component {
               max={10}
               // size='large'
               color='secondary'
-              onChangeCommitted={(e, value) => this.setState(
+              onChange={(e, value) => this.setState(
                 { slider_value: value },
                 this.onClick()
                 // console.log(this.state.slider_value)
@@ -185,7 +191,7 @@ class App extends Component {
               min={0}
               // size='large'
               color='secondary'
-              onChangeCommitted={(e, value) => this.setState(
+              onChange={(e, value) => this.setState(
                 { slider2_value: value },
                 this.onClick()
                 // console.log(this.state.slider2_value)
@@ -238,7 +244,7 @@ class App extends Component {
             </Carousel>
 
         <h1> Apparel Designs</h1>
-          <img  className="image" hidden={this.state.tiled ? false : true} id="mask" height="500" width="500" 
+          <img  className="image" hidden={this.state.tiled ? false : true} id="mask" height="250" width="250" 
           src= {this.state.mask_img}
           onMouseOut={() => {
             this.setState({
@@ -253,7 +259,9 @@ class App extends Component {
           >
 
           </img>
-          <img  className="image" hidden={this.state.tiled ? false : true} id="cushion" height="500" width="500" src={this.state.cushion}></img>
+          <img  className="image" hidden={this.state.tiled ? false : true} id="cushion" height="300" width="300" src={this.state.cushion}></img>
+          <img  className="image" hidden={this.state.tiled ? false : true} id="slipper" height="250" width="250" src={this.state.slipper}></img>
+          <img  className="image" hidden={this.state.tiled ? false : true} id="scrunchie" height="250" width="250" src={this.state.scrunchie}></img>
           {/* <img id="complementary" height="250" width="250" src={this.state.complementary}></img> */}
 
       </div>
