@@ -1,15 +1,19 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+__pycache__
+
 *.zip
-*.png
+# *.png
+# *.jpg
 *.npy
 *.pyc
 *.h5
-*.jpg
+
+flask-api/detected_objects/*
+flask-api/flowers_quilting/complete_sketchy/*
+flask-api/flowers_quilting/feature_array/*
+flask-api/flowers_quilting/flowers_feature_array/*
+flask-api/flowers_quilting/sketchy/*
 flask-api/autoencoder/*
-flask-api/api
-flask-api/data
-flask-api/models
-flask-api/util
-flask-api/checkpoints
+flask-api/tmp/*
 

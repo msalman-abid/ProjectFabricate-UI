@@ -145,11 +145,11 @@ class App extends Component {
           </div>
 
           <Design m_file={this.state.p_file} />
-          <div className="Arrow">
-          <ArrowForwardIosIcon fontSize="large" style={{ color: '#ffd400' }} />
+          {/* <div className="Arrow"> */}
+          {/* <ArrowForwardIosIcon fontSize="large" style={{ color: '#ffd400' }} />
           </div>
 
-          <Autoenc m_design={this.state.a_file}/>
+          <Autoenc m_design={this.state.a_file}/> */}
         </div>
         
         <h1> Image Tiling</h1>

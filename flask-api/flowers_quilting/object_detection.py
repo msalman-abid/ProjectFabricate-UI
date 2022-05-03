@@ -51,10 +51,6 @@ def object_detection(path):
             orig_name = os.path.basename(path)
             end_path = base + orig_name.split('.')[0] + ext
 
-        # ext='jpg' if path.split('.')[1]=='jpg' else 'png'
-        # base=os.path.basename(path)
-        # base=base.split('.')[0]
-
         print(num, end_path)
         
         img = Image.fromarray(ROI, 'RGB')

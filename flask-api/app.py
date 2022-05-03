@@ -81,7 +81,7 @@ def predict():
     
     ### Test autoencoder ###
     # save image as jpg
-    img.save('./test.jpg')
+    # img.save('./test.jpg')
 
     rawBytes = io.BytesIO()
     img.save(rawBytes, "JPEG")

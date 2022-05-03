@@ -120,9 +120,9 @@ def patchStyle(img, images, num_block):
         else:
             exist, num = False, 0
             while not exist:
-                # if num >= 30:
-                #     exist = True
-                #     break
+                if num >= 30:
+                    exist = True
+                    break
 
                 x, y  = randrange(w - p_w),  randrange(h - p_h)
                 rect = [x, y, x+p_w, y+p_h]
@@ -148,8 +148,8 @@ def patchStyle(img, images, num_block):
                         if not exist:
                             break
                     num += 1
-            # if num >= 30:
-            #     continue
+            if num >= 30:
+                continue
             rect = [x, y, x+p_w, y+p_h]
             overlapping.append(rect)
             img[y: y + p_h, x: x + p_w, :][idx] = (0, 0, 0)
