@@ -258,8 +258,5 @@ def augment_recomm():
     return {'status':str(img_base64), 'recc_augmented': True}
 
 
-
-
-
 if __name__ == '__main__':
     app.run()

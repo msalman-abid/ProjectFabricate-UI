@@ -64,21 +64,20 @@ import os
 
 # Insert the image query
 
-def retrieval(folder= os.getcwd()+"\\detected_objects"):
+def retrieval(folder= os.getcwd()+"/detected_objects"):
     fe = FeatureExtractor()
     features = []
     img_paths = []
     lst=[]
     images=[]
-    for feature_path in Path(os.getcwd()+"\\flowers_quilting\\feature_array\\").glob("*.npy"):
+    for feature_path in Path(os.getcwd()+"/flowers_quilting/flowers_feature_array/").glob("*.npy"):
         features.append(np.load(feature_path))
-        img_paths.append(os.getcwd()+"\\flowers_quilting\\complete_sketchy\\"+feature_path.stem + ".png")
+        img_paths.append(os.getcwd()+"/flowers_quilting/sketchy/"+feature_path.stem + ".png")
 
     features = np.array(features)
     for image in glob.iglob(f'{folder}/*'):
         images.append(image)
-        
-    
+
     for image in images:
         img = Image.open(image)
         # plt.imshow(img)
