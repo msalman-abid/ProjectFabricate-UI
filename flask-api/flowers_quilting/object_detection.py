@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from .transparent import convertImage
 
 
-def object_detection(path,action="sketches"):
+def object_detection(path, action="sketches", m_dir='/../detected_objects/'):
     image = None
     retrieved = False
 
@@ -18,9 +18,15 @@ def object_detection(path,action="sketches"):
     if type(path) == str:
         image = cv2.imread(path)
         retrieved = True
+        print('HERE')
+        print(type(image))
     else:
-        image = path # assuming image format is already RGB
-   
+        # image = path # assuming image format is already RGB
+        image = np.array(path) 
+        # Convert RGB to BGR 
+        image = image[:, :, ::-1].copy() 
+        print(type(image))
+
     original = image.copy()
 
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -57,7 +63,6 @@ def object_detection(path,action="sketches"):
             ROI = original[y:y+h, x:x+w]
    
         base=os.path.dirname(os.path.abspath(__file__))
-        m_dir='/../detected_objects/'
         base = base + m_dir
         if not retrieved:
             ext = '.png'

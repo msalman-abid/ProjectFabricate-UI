@@ -1,6 +1,7 @@
 # SPDX-FileCopyrightText: (c) 2021 Artyom Galkin <github.com/rtmigo>
 # SPDX-License-Identifier: MIT
 from math import floor
+import os
 from pathlib import Path
 from typing import Tuple
 import cv2
@@ -187,12 +188,13 @@ def apparel_generation(pattern: Image, templatePath: str, black = True):
     result = Image.fromarray(result)
     return result
 
+
 def complementary_designs(img: Image, direction: str):
     img = img.resize((256,256))
     colors,_ = extcolors.extract_from_image(img)
-    final_img =Image.new('RGB',(256,256),colors[0][0])
+    dim=500
+    final_img =Image.new('RGB',(dim,dim),colors[0][0])
     draw_final_img = ImageDraw.Draw(final_img)
-    dim = 500
     dimensions=dim
     spacing=[2,4]
     if direction=='Checked' or direction=='Diagonal-Left' or direction=='Diagonal-Right':
@@ -200,33 +202,35 @@ def complementary_designs(img: Image, direction: str):
     spacing=random.choice(spacing)
     for i in range(0, dimensions, 15):
         if i%spacing==0:
-            color=colors[1]
-        else:
             color=colors[2]
+        else:
+            color=colors[3]
         if direction=='Vertical':
-            draw_final_img.line([(i, 0),(i,dim)], width=3, 
+            draw_final_img.line([(i, 0),(i,dim)], width=3,
                     fill=color[0])
-        elif direction=='Horizontal':
-            draw_final_img.line([(0, i),(dim,i)], width=3, 
+        if direction=='Horizontal':
+            draw_final_img.line([(0, i),(dim,i)], width=3,
                     fill=color[0])
-        elif direction=='Diagonal-Left':
-            draw_final_img.line([(i, 0),(i-final_img.size[0],dim)], width=2, 
+        if direction=='Diagonal-Left':
+            draw_final_img.line([(i, 0),(i-final_img.size[0],dim)], width=2,
                     fill=color[0])
-        elif direction=='Diagonal-Right':
-            draw_final_img.line([(0, i-final_img.size[0]),(dim,i)], width=2, 
+        if direction=='Diagonal-Right':
+            draw_final_img.line([(0, i-final_img.size[0]),(dim,i)], width=2,
                     fill=color[0])
-        elif direction=='Checked':
-            draw_final_img.line([(0, i-final_img.size[0]),(dim,i)], width=2, 
+        if direction=='Checked':
+            draw_final_img.line([(0, i-final_img.size[0]),(dim,i)], width=2,
                     fill=color[0])
-            draw_final_img.line([(i, 0),(i-final_img.size[0],dim)], width=2, 
+            draw_final_img.line([(i, 0),(i-final_img.size[0],dim)], width=2,
                     fill=color[0])
-        elif direction=="Zig-Zag":
+        if direction=="Zig-Zag":
             for i in range(0,256,10):
                 for j in range(0,256,10):
                     # draw_final_img.line([(0, 0), (10,10),(20,0),(30,10),(40,0)], width=2, fill="green",joint="curve")
                     draw_final_img.line([(j+10,i),(j+30,i)], width=2, fill="green",joint="curve")
                     final_img.show()
                     break
+
+    final_img = final_img.resize((256,256))
 
     return final_img
 
@@ -240,9 +244,10 @@ def dupatta(img: Image, choice: str):
         colors,_ = extcolors.extract_from_image(img)
         final_image = Image.new('RGB',(500,500),colors[0][0])
     
-    object_detection.object_detection(img, 'dupatta')
-    folder= "detected_objects\\*"
-    for i in glob.iglob(f'{folder}/*'):
+    object_detection.object_detection(img, action='dupatta', m_dir='/../detected_dupatta/')
+
+    for i in glob.glob(os.getcwd()+"\\detected_dupatta\\*"):
+        print(i)
         patch=i
 
     patch=Image.open(patch)

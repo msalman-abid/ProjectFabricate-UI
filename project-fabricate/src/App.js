@@ -189,7 +189,7 @@ class App extends Component {
 
             <h3> Control Overlap</h3>
             <Slider
-              defaultValue={0.25}
+              defaultValue={0.05}
               // getAriaValueText={valuetext}
               step={0.05}
               valueLabelDisplay="auto"

@@ -154,9 +154,9 @@ def tiled():
     size = request.form['size']
     overlap = request.form['overlap']
     choose = int(request.form['choose'])
-    image = Image.open(file)
+    src_img = Image.open(file)
 
-    image = img2tex(image, float(overlap))
+    image = img2tex(src_img, float(overlap))
     image = tile(image, int(size), int(size))
     if choose != 0:
         image = post_processing(image, choose)
@@ -194,15 +194,14 @@ def tiled():
     comp5 = complementary_designs(image, "Checked")
     comp5_base64 = image_to_bytes(comp5)
 
-    comp6 = dupatta(image, 'lines-bg')
+    comp6 = dupatta(src_img, 'lines-bg')
     comp6_base64 = image_to_bytes(comp6)
 
-    comp7 = dupatta(image, 'plain-bg')
+    comp7 = dupatta(src_img, 'plain-bg')
     comp7_base64 = image_to_bytes(comp7)
 
     print("[+] Apparel Generated!")
 
-    
 
     return {'status':str(img_base64), 'tiled': True, \
      'mask': str(mask_base64), 'mask2': str(mask2_base64), \
