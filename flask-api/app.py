@@ -194,8 +194,13 @@ def tiled():
     comp5 = complementary_designs(image, "Checked")
     comp5_base64 = image_to_bytes(comp5)
 
-    print("[+] Apparel Generated!")
+    comp6 = dupatta(image, 'lines-bg')
+    comp6_base64 = image_to_bytes(comp6)
 
+    comp7 = dupatta(image, 'plain-bg')
+    comp7_base64 = image_to_bytes(comp7)
+
+    print("[+] Apparel Generated!")
 
     
 
@@ -204,7 +209,8 @@ def tiled():
         'cushion': str(cushion_base64), 'slipper' : str(slipper_base64), 
         'scrunchie' : str(scrunchie_base64), 'complementary': str(comp_base64), \
         'complementary2': str(comp2_base64), 'complementary3': str(comp3_base64), 
-        'complementary4': str(comp4_base64), 'complementary5': str(comp5_base64)}
+        'complementary4': str(comp4_base64), 'complementary5': str(comp5_base64),
+        'complementary6': str(comp6_base64), 'complementary7': str(comp7_base64)}
 
 
 @app.route('/api/recomm_sketch', methods=['GET'])

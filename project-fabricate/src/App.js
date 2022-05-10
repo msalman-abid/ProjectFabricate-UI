@@ -52,6 +52,8 @@ class App extends Component {
       complementary3: null,
       complementary4: null,
       complementary5: null,
+      complementary6: null,
+      complementary7: null,
       mask_img: null,
       choose: 0,
     }
@@ -96,6 +98,8 @@ class App extends Component {
             var comp3 = result['complementary3'].split('\'')[1];
             var comp4 = result['complementary4'].split('\'')[1];
             var comp5 = result['complementary5'].split('\'')[1];
+            var comp6 = result['complementary6'].split('\'')[1];
+            var comp7 = result['complementary7'].split('\'')[1];
             this.setState({
               //save base64 image to state
               tiled: 'data:image/jpeg;base64,' + image,
@@ -109,6 +113,9 @@ class App extends Component {
               complementary3: 'data:image/jpeg;base64,' + comp3,
               complementary4: 'data:image/jpeg;base64,' + comp4,
               complementary5: 'data:image/jpeg;base64,' + comp5,
+              complementary6: 'data:image/jpeg;base64,' + comp6,
+              complementary7: 'data:image/jpeg;base64,' + comp7,
+
               choose: 0
             })
           })
@@ -149,7 +156,7 @@ class App extends Component {
           {/* <ArrowForwardIosIcon fontSize="large" style={{ color: '#ffd400' }} />
           </div>
 
-          <Autoenc m_design={this.state.a_file}/> */}
+          {/* <Autoenc m_design={this.state.a_file}/> */}
         </div>
         
         <h1> Image Tiling</h1>
@@ -240,6 +247,14 @@ class App extends Component {
           <div>
             <img src={this.state.tiled} width='256' height='256' />
             <img src={this.state.complementary5} />
+          </div>
+          <div>
+            <img src={this.state.tiled} width='256' height='256' />
+            <img src={this.state.complementary6} />
+          </div>
+          <div>
+            <img src={this.state.tiled} width='256' height='256' />
+            <img src={this.state.complementary7} />
           </div>
             </Carousel>
 

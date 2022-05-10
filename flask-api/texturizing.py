@@ -8,6 +8,9 @@ import numpy as np
 import random
 from PIL import Image, ImageDraw
 import extcolors
+from flowers_quilting import object_detection
+import glob
+from resizeimage import resizeimage
 
 from PIL import Image  # importing with tweaked options
 
@@ -189,10 +192,11 @@ def complementary_designs(img: Image, direction: str):
     colors,_ = extcolors.extract_from_image(img)
     final_img =Image.new('RGB',(256,256),colors[0][0])
     draw_final_img = ImageDraw.Draw(final_img)
-    dimensions=256
+    dim = 500
+    dimensions=dim
     spacing=[2,4]
     if direction=='Checked' or direction=='Diagonal-Left' or direction=='Diagonal-Right':
-        dimensions=256*2
+        dimensions=dim*2
     spacing=random.choice(spacing)
     for i in range(0, dimensions, 15):
         if i%spacing==0:
@@ -200,21 +204,21 @@ def complementary_designs(img: Image, direction: str):
         else:
             color=colors[2]
         if direction=='Vertical':
-            draw_final_img.line([(i, 0),(i,256)], width=3, 
+            draw_final_img.line([(i, 0),(i,dim)], width=3, 
                     fill=color[0])
         elif direction=='Horizontal':
-            draw_final_img.line([(0, i),(256,i)], width=3, 
+            draw_final_img.line([(0, i),(dim,i)], width=3, 
                     fill=color[0])
         elif direction=='Diagonal-Left':
-            draw_final_img.line([(i, 0),(i-final_img.size[0],256)], width=2, 
+            draw_final_img.line([(i, 0),(i-final_img.size[0],dim)], width=2, 
                     fill=color[0])
         elif direction=='Diagonal-Right':
-            draw_final_img.line([(0, i-final_img.size[0]),(256,i)], width=2, 
+            draw_final_img.line([(0, i-final_img.size[0]),(dim,i)], width=2, 
                     fill=color[0])
         elif direction=='Checked':
-            draw_final_img.line([(0, i-final_img.size[0]),(256,i)], width=2, 
+            draw_final_img.line([(0, i-final_img.size[0]),(dim,i)], width=2, 
                     fill=color[0])
-            draw_final_img.line([(i, 0),(i-final_img.size[0],256)], width=2, 
+            draw_final_img.line([(i, 0),(i-final_img.size[0],dim)], width=2, 
                     fill=color[0])
         elif direction=="Zig-Zag":
             for i in range(0,256,10):
@@ -225,6 +229,31 @@ def complementary_designs(img: Image, direction: str):
                     break
 
     return final_img
+
+
+
+def dupatta(img: Image, choice: str): 
+    if choice=="lines-bg":
+        final_image=complementary_designs(img, 'Vertical')
+
+    if choice=="plain-bg":
+        colors,_ = extcolors.extract_from_image(img)
+        final_image = Image.new('RGB',(500,500),colors[0][0])
+    
+    object_detection.object_detection(img, 'dupatta')
+    folder= "detected_objects\\*"
+    for i in glob.iglob(f'{folder}/*'):
+        patch=i
+
+    patch=Image.open(patch)
+    coord_list=[(20,20),(50,180),(190,100),(256,256),(150,279),(30,400),(410,410),(320,50),(240,390),(400,150)]
+
+    for i in coord_list:
+        final_image.paste(patch, (i[0],i[1]), mask =patch)
+
+    final_image = resizeimage.resize_cover(final_image, [256, 256])
+    return final_image
+
 
 def post_processing(img: Image, choose):
     if choose == 1:
