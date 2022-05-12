@@ -119,12 +119,14 @@ class DrawCanvas extends Component {
             <ToggleButtonGroup
             color="primary"
             value={this.state.alignment}
+            trackStyle={{ backgroundColor: 'green' }}
             // exclusive
             >
         
             <FormControlLabel 
             control={
-              <Switch defaultChecked 
+              <Switch 
+              defaultChecked 
               onChange={ (e, value) => this.setState(
                 {alignment: value})
               }

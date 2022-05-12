@@ -183,7 +183,7 @@ class App extends Component {
               max={10}
               // size='large'
               color='secondary'
-              onChange={(e, value) => this.setState(
+              onChangeCommitted={(e, value) => this.setState(
                 { slider_value: value },
                 this.onClick()
                 // console.log(this.state.slider_value)
@@ -208,7 +208,7 @@ class App extends Component {
               min={0}
               // size='large'
               color='secondary'
-              onChange={(e, value) => this.setState(
+              onChangeCommitted={(e, value) => this.setState(
                 { slider2_value: value },
                 this.onClick()
                 // console.log(this.state.slider2_value)

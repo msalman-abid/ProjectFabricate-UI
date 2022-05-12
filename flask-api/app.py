@@ -174,9 +174,9 @@ def auto_enc():
 @app.route('/api/tiled', methods=['POST'])
 def tiled():
     # create detected_dupatta folder if not exist
-    dupatta_path = os.getcwd()+"/detected_dupatta"
-    shutil.rmtree(dupatta_path,ignore_errors=True)
-    os.mkdir(dupatta_path)
+    # dupatta_path = os.getcwd()+"/detected_dupatta"
+    # shutil.rmtree(dupatta_path,ignore_errors=True)
+    # os.mkdir(dupatta_path)
 
 
     file = request.files['image']
