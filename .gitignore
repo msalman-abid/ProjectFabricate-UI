@@ -16,4 +16,5 @@ flask-api/flowers_quilting/flowers_feature_array/*
 flask-api/flowers_quilting/sketchy/*
 flask-api/autoencoder/*
 flask-api/tmp/*
+flask-api/detected_dupatta/*
 

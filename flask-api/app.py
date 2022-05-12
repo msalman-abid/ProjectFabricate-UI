@@ -1,3 +1,4 @@
+import subprocess
 from flask import Flask
 from flask import request, json
 from PIL import Image
@@ -21,6 +22,19 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.dirname(SCRIPT_DIR))
 
 from flowers_quilting.main import augment
+
+# Limiting GPU Memory growth from Max to Adaptive
+gpus = tf.config.list_physical_devices('GPU')
+if gpus:
+  try:
+    # Currently, memory growth needs to be the same across GPUs
+    for gpu in gpus:
+      tf.config.experimental.set_memory_growth(gpu, True)
+    logical_gpus = tf.config.list_logical_devices('GPU')
+    print(len(gpus), "Physical GPUs,", len(logical_gpus), "Logical GPUs")
+  except RuntimeError as e:
+    # Memory growth must be set before GPUs have been initialized
+    print(e)
 
 def image_to_bytes(img):
     rawBytes = io.BytesIO()
@@ -70,7 +84,7 @@ def predict():
 	# ######### Do preprocessing here ################
 
     pixels = load_image(img)
-    prediction = model(pixels, training=True)
+    prediction = model(pixels, training=False)
     print("[+] Model prediction successful!") 
     prediction = ((prediction + 1) / 2.0) * 255
 
@@ -91,7 +105,7 @@ def predict():
 
 @app.route('/api/augment', methods=['POST'])
 def augment_me():
-    path = os.getcwd()+"\\detected_objects"
+    path = os.getcwd()+"/detected_objects"
     shutil.rmtree(path,ignore_errors=True)
     os.mkdir(path)
 
@@ -120,8 +134,8 @@ def augment_me():
 @app.route('/api/auto_enc', methods=['POST'])
 def auto_enc():
 
-    struc_file = request.files['image_tex']
-    tex_file = request.files['image_struct']
+    tex_file = request.files['image_tex']
+    struc_file = request.files['image_struct']
     
     
     tex_image = Image.open(tex_file).convert("RGBA")
@@ -137,18 +151,26 @@ def auto_enc():
     struc_image.save('./tmp/struc_image.jpg')
 
     ### AUTO ENCODER SCRIPT ###
+    # subprocess.run('bash -c "conda activate torch; cd autoencoder; python -m experiments floral test floral_default"', shell=True)
+    subprocess.call(['/bin/bash', '-i', '-c', "conda activate torch;cd autoencoder; python -m experiments floral test floral_default"])
+
 
     ### END ###
-
+    result = Image.open("/home/oa04320/Desktop/ProjectFabricate-UI/flask-api/results/floral_default/simpleswapping/output.jpg")
     print("[+] Image swapping successful!")
     rawBytes = io.BytesIO()
-    tex_image.save(rawBytes, "JPEG")
+    result.save(rawBytes, "JPEG")
     rawBytes.seek(0)
     img_base64 = base64.b64encode(rawBytes.read())
     return {'status':str(img_base64), 'augmented': True}
 
 @app.route('/api/tiled', methods=['POST'])
 def tiled():
+    # create detected_dupatta folder if not exist
+    dupatta_path = os.getcwd()+"/detected_dupatta"
+    shutil.rmtree(dupatta_path,ignore_errors=True)
+    os.mkdir(dupatta_path)
+
 
     file = request.files['image']
     size = request.form['size']
@@ -164,19 +186,19 @@ def tiled():
 
     print("[+] Image tiling successful!")
 
-    mask = apparel_generation(image, "templates\mask2.png")
+    mask = apparel_generation(image, "templates/mask2.png")
     mask_base64 = image_to_bytes(mask)
 
-    mask2 = apparel_generation(image, "templates\mask4.png")
+    mask2 = apparel_generation(image, "templates/mask4.png")
     mask2_base64 = image_to_bytes(mask2)
 
-    cushion = apparel_generation(image, "templates\cushion2.png", False)
+    cushion = apparel_generation(image, "templates/cushion2.png", False)
     cushion_base64 = image_to_bytes(cushion)
 
-    slipper = apparel_generation(image, "templates\slipper.png")
+    slipper = apparel_generation(image, "templates/slipper.png")
     slipper_base64 = image_to_bytes(slipper)
 
-    scrunchie = apparel_generation(image, "templates\scrunchie.png")
+    scrunchie = apparel_generation(image, "templates/scrunchie.png")
     scrunchie_base64 = image_to_bytes(scrunchie)
 
     comp = complementary_designs(image, "Vertical")
@@ -216,10 +238,10 @@ def tiled():
 def recomm_sketch():
     
     total = 10
-    path = os.getcwd()+"\\detected_objects"
+    path = os.getcwd()+"/detected_objects"
     shutil.rmtree(path,ignore_errors=True)
     os.mkdir(path)
-    paths = glob.glob(os.getcwd()+"\\flowers_quilting\\sketchy\\*.png")
+    paths = glob.glob(os.getcwd()+"/flowers_quilting/sketchy/*.png")
     selected_paths = random.sample(paths, total)
     for i in selected_paths:
         try:
@@ -228,7 +250,7 @@ def recomm_sketch():
             print("Error")
 
     images = {'-_-': 'bye', 'total': total}
-    paths = sorted(glob.glob(os.getcwd()+"\\detected_objects\\*"))
+    paths = sorted(glob.glob(os.getcwd()+"/detected_objects/*"))
     for i, elem in enumerate(paths):
         temp_img = Image.open(elem)
         rawBytes = io.BytesIO()
@@ -243,7 +265,7 @@ def augment_recomm():
     chkd_array = request.form['chkd_array']
     chkd_array = eval(chkd_array)
 
-    paths = sorted(glob.glob(os.getcwd()+"\\detected_objects\\*"))
+    paths = sorted(glob.glob(os.getcwd()+"/detected_objects/*"))
 
     # delete items in paths where chkd_array is 0
     for i, elem in enumerate(paths):

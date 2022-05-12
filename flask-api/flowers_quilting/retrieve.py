@@ -70,9 +70,9 @@ def retrieval(folder= os.getcwd()+"/detected_objects"):
     img_paths = []
     lst=[]
     images=[]
-    for feature_path in Path(os.getcwd()+"/flowers_quilting/flowers_feature_array/").glob("*.npy"):
+    for feature_path in Path(os.getcwd()+"/flowers_quilting/feature_array/").glob("*.npy"):
         features.append(np.load(feature_path))
-        img_paths.append(os.getcwd()+"/flowers_quilting/sketchy/"+feature_path.stem + ".png")
+        img_paths.append(os.getcwd()+"/flowers_quilting/complete_sketchy/"+feature_path.stem + ".png")
 
     features = np.array(features)
     for image in glob.iglob(f'{folder}/*'):
@@ -85,7 +85,7 @@ def retrieval(folder= os.getcwd()+"/detected_objects"):
         query = fe.extract(img)
         # Calculate the similarity (distance) between images
         dists = np.linalg.norm(features - query, axis=1)
-        # Extract 30 images that have lowest distance
+        # Extract 3 images that have lowest distance
         ids = np.argsort(dists)[:2]
         scores = [(dists[id], img_paths[id]) for id in ids]
         for i in scores:

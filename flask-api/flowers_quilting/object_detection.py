@@ -8,7 +8,8 @@ import matplotlib.pyplot as plt
 from .transparent import convertImage
 
 
-def object_detection(path, action="sketches", m_dir='/../detected_objects/'):
+def object_detection(path, action="sketches", m_dir='/../detected_objects/',retrieval=False):
+    print(path)
     image = None
     retrieved = False
 
@@ -26,13 +27,16 @@ def object_detection(path, action="sketches", m_dir='/../detected_objects/'):
         # Convert RGB to BGR 
         image = image[:, :, ::-1].copy() 
         print(type(image))
-
+   
     original = image.copy()
 
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     blurred = cv2.GaussianBlur(gray, (3, 3), 0)
     canny = cv2.Canny(blurred, 120, 255, 1)
-    kernel = np.ones((2,2),np.uint8)
+    if retrieval:
+        kernel = np.ones((5,5),np.uint8)
+    else:
+        kernel = np.ones((2,2),np.uint8)
     dilate = cv2.dilate(canny, kernel, iterations=1)
    
     # Find contours
@@ -45,20 +49,26 @@ def object_detection(path, action="sketches", m_dir='/../detected_objects/'):
     num = 0
    
     cnts=cnts[:1] if action=="dupatta" else cnts
+    
     for c in range(len(cnts)):
-
+        # if retrieval:
+        #     print("Here")
+        #     x,y,w,h = cv2.boundingRect(cnts[c])
+        #     ROI = original[y:y+h, x:x+w]
+        # else:
         original = image.copy()
         x,y,w,h = cv2.boundingRect(cnts[c])
         temp=cnts.copy()
         temp.pop(c)
         for i in range(len(temp)):
-           
+        
             cv2.drawContours(original, [temp[i]],-1,(255,255,255), thickness = cv2.FILLED)
-           
+        
         if action=="dupatta":
             mask = np.zeros(original.shape[:2],np.uint8)
             cv2.drawContours(mask, [cnts[c]],-1,(255,255,255),thickness = cv2.FILLED)
             ROI = cv2.bitwise_and(original, original, mask=mask)
+            ROI = ROI[y:y+h, x:x+w]
         else:
             ROI = original[y:y+h, x:x+w]
    
@@ -74,9 +84,9 @@ def object_detection(path, action="sketches", m_dir='/../detected_objects/'):
 
 
         print(num, end_path)
-        # ROI=cv2.cvtColor(ROI, cv2.COLOR_BGR2RGB)
+        ROI=cv2.cvtColor(ROI, cv2.COLOR_BGR2RGB)
         ROI = Image.fromarray(ROI)
-        ROI=convertImage(ROI)
+        ROI=convertImage(ROI,action)
         ROI.save(end_path)
 
         num += 1

@@ -11,13 +11,13 @@ import glob
 
 
 def augment(drawnImg, objRetrieval, style, draw=True):
-    num_block = 15
+    num_block = 30
     if draw:
         object_detection(drawnImg)
         similar_paths =retrieval()
         images = total_images_drawn(similar_paths, objRetrieval)
     else:
-        images = glob.glob(os.getcwd()+"\\detected_objects\\*")
+        images = glob.glob(os.getcwd()+"/detected_objects/*")
         for elem_path in images:
             object_detection(elem_path)
             # tmp_img = Image.open(elem_path)

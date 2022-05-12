@@ -190,7 +190,7 @@ def apparel_generation(pattern: Image, templatePath: str, black = True):
 
 
 def complementary_designs(img: Image, direction: str):
-    img = img.resize((256,256))
+    # img = img.resize((256,256))
     colors,_ = extcolors.extract_from_image(img)
     dim=500
     final_img =Image.new('RGB',(dim,dim),colors[0][0])
@@ -201,10 +201,13 @@ def complementary_designs(img: Image, direction: str):
         dimensions=dim*2
     spacing=random.choice(spacing)
     for i in range(0, dimensions, 15):
-        if i%spacing==0:
-            color=colors[2]
+        if len(colors)>=3:
+            if i%spacing==0:
+                color=colors[1]
+            else:
+                color=colors[2]
         else:
-            color=colors[3]
+            color=colors[1]
         if direction=='Vertical':
             draw_final_img.line([(i, 0),(i,dim)], width=3,
                     fill=color[0])
@@ -229,9 +232,7 @@ def complementary_designs(img: Image, direction: str):
                     draw_final_img.line([(j+10,i),(j+30,i)], width=2, fill="green",joint="curve")
                     final_img.show()
                     break
-
     final_img = final_img.resize((256,256))
-
     return final_img
 
 
@@ -239,6 +240,7 @@ def complementary_designs(img: Image, direction: str):
 def dupatta(img: Image, choice: str): 
     if choice=="lines-bg":
         final_image=complementary_designs(img, 'Vertical')
+        final_image=final_image.resize((500,500))
 
     if choice=="plain-bg":
         colors,_ = extcolors.extract_from_image(img)
@@ -246,17 +248,26 @@ def dupatta(img: Image, choice: str):
     
     object_detection.object_detection(img, action='dupatta', m_dir='/../detected_dupatta/')
 
-    for i in glob.glob(os.getcwd()+"\\detected_dupatta\\*"):
+    for i in glob.glob(os.getcwd()+"/detected_dupatta/*"):
         print(i)
         patch=i
 
     patch=Image.open(patch)
-    coord_list=[(20,20),(50,180),(190,100),(256,256),(150,279),(30,400),(410,410),(320,50),(240,390),(400,150)]
+    
+    if max(patch.size)<60:
+        patch=patch.resize((60,60))
+    else:
+        patch=resizeimage.resize_contain(patch, [60, 60])
+
+    coord_list=[(20,20),(50,180),(190,100),(275,240),(150,279),(40,390),(395,395),(320,37),(240,370),(400,150)]
+    #,(190,100),(256,256),(150,279),(30,400),(410,410),(320,50),(240,390),(400,150)]
 
     for i in coord_list:
         final_image.paste(patch, (i[0],i[1]), mask =patch)
 
     final_image = resizeimage.resize_cover(final_image, [256, 256])
+    
+
     return final_image
 
 

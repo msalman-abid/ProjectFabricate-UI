@@ -72,7 +72,7 @@ class Autoenc extends Component {
             <h2> Auto Enc Sketch</h2>
              <div className="Image">
               <img id="upload" width='400' height='400' 
-                src={this.state.file}
+                src={this.state.finalimg}
                  />
             </div>
 

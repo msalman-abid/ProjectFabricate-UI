@@ -25,9 +25,10 @@ def total_images_drawn(image_path,retrieval=False):
     images = []
     if retrieval:
         for i in image_path[:4]:
-            object_detection(i)
+            print(i)
+            object_detection(i,retrieval=True)
 
-    folder = os.getcwd()+'\\detected_objects'
+    folder = os.getcwd()+'/detected_objects'
     for i in glob.iglob(f'{folder}/*'):
         images.append(i)
 
@@ -37,8 +38,8 @@ def total_images_drawn(image_path,retrieval=False):
 def total_images_selected(image_path):
     images = []
     for i in image_path:
-        object_detection(i)
-    folder = os.getcwd()+'\\detected_objects'
+        object_detection(i,retrieval=True)
+    folder = os.getcwd()+'/detected_objects'
     for i in glob.iglob(f'{folder}/*'):
         images.append(i)
     return images
@@ -56,17 +57,18 @@ def randomRotation(patch):
     return patch
 
 def chooseSize(patch):
-    sizes = np.random.randint(1, 3)
+    sizes = np.random.randint(1, 2)
     if sizes == 2:
-        size = random.randint(200, 350)
+        size = random.randint(320, 350)
         patch = Image.fromarray(patch)
         patch = resizeimage.resize_contain(patch, [size, size])
         patch = patch.filter(ImageFilter.EDGE_ENHANCE_MORE)
         patch = asarray(patch)
-    if sizes == 1:
-        size = random.randint(350, 600)
+    if sizes ==1:
+        size = random.randint(320, 600)
         patch = cv2.resize(patch, (size, size),
                             interpolation=cv2.INTER_AREA)
+  
     return patch
 
 def gridStyle(images, size, img):
@@ -78,6 +80,7 @@ def gridStyle(images, size, img):
             x = j * (block_size-1)
             choice = random.choice(images)
             patch = cv2.imread(choice, cv2.IMREAD_UNCHANGED)
+            patch = randomRotation(patch)
             if patch.shape[0] >= block_size or patch.shape[1] >= block_size:
                 patch = Image.fromarray(patch)
                 patch = resizeimage.resize_cover(
@@ -99,14 +102,31 @@ def gridStyle(images, size, img):
 
 def patchStyle(img, images, num_block):
     # num_block = round(img.shape[0]**2/600**2)-1
+    shapes=[]
+    shape='Shapes'
+    for i in glob.iglob(f'{shape}/*'):
+        object_detection(i)
+        shapes.append(i)
     overlapping = []
-    for i in range(num_block):
+    final_loop=random.randint(1,5)
+    if final_loop==1:
+        leng=num_block
+    else:
+        leng=num_block+random.randint(6,10)
+        
+    shape_choice=random.choice(shapes)
+    for i in range(leng):
         if i <= num_block:
             choice = random.choice(images)
             patch = cv2.imread(choice, cv2.IMREAD_UNCHANGED)
             patch = randomRotation(patch)
             patch = chooseSize(patch)
-
+        else:
+            patch = cv2.imread(shape_choice,cv2.IMREAD_UNCHANGED)
+            patch=Image.fromarray(patch)
+            # patch=resizeimage.resize_cover(patch, [200, 200])
+            patch = patch.filter(ImageFilter.EDGE_ENHANCE_MORE)
+            patch=asarray(patch)
         idx = patch[:, :, 3] == 255
         p_h, p_w, _ = patch.shape
         h, w, _ = img.shape
