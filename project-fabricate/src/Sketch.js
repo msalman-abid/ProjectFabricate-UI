@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Drawer, Typography, Checkbox } from '@material-ui/core'
+import { Button, Drawer, CircularProgress, Checkbox, Box } from '@material-ui/core'
 import './Sketch.css';
 import "react-sliding-pane/dist/react-sliding-pane.css";
 
@@ -88,9 +88,10 @@ class Sketch extends Component {
             chkd_array[index] = 1;
         }
         
+        this.props.setLoading(true);
+
         let formdata = new FormData();
         formdata.append('chkd_array',chkd_array);
-        
         fetch('/api/augment_recomm', {
           method: 'POST',
           body: formdata
@@ -102,6 +103,7 @@ class Sketch extends Component {
               file: 'data:image/jpeg;base64,'+image,
             },
             () => {
+              this.props.revertToRecommended(this.state.file);
               fetch(this.state.file)
               .then(res => res.blob())
               .then(blob => {
@@ -116,9 +118,21 @@ class Sketch extends Component {
           <div>
             <h2> Augmented Sketch</h2>
              <div className="Image">
+               <Box
+               display="flex"
+               flexDirection="column"
+               justifyContent="center"
+               alignItems="center"
+              sx={{
+                width: 400,
+                height: 400,
+                }}>
+              {this.props.loading ? <CircularProgress size={100}/> : 
               <img id="upload" width='400' height='400' 
-                src={this.props.m_file == null ? this.state.file : this.props.m_file}
-                 />
+                src={this.props.m_file == null ? this.state.file : this.props.m_file}/>}
+               {/* {this.props.loading ? "\nGenerating..." : null} */}
+               </Box>
+               
             </div>
 
             <div className="btn">

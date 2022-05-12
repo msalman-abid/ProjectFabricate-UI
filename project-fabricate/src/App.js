@@ -39,6 +39,7 @@ class App extends Component {
     this.state = {
       a_file: null,
       p_file: null,
+      loading: false,
       tiled: null,
       slider_value: 2,
       slider2_value: 0.25,
@@ -64,7 +65,11 @@ class App extends Component {
   }
 
   callbackAugment = (data) => {
-    this.setState({ a_file: data })
+    this.setState({ a_file: data, loading: false });
+  }
+
+  setLoading = (data) => {
+    this.setState({ loading: data })
   }
 
   onClick = () => {
@@ -103,6 +108,7 @@ class App extends Component {
             this.setState({
               //save base64 image to state
               tiled: 'data:image/jpeg;base64,' + image,
+              mask_img: 'data:image/jpeg;base64,' + mask,
               mask: 'data:image/jpeg;base64,' + mask,
               mask2: 'data:image/jpeg;base64,' + mask2,
               cushion: 'data:image/jpeg;base64,' + cushion,
@@ -141,12 +147,16 @@ class App extends Component {
           </p>
         </header>
         <div className='Components'>
-          <DrawCanvas className="canvas" aCallback={this.callbackAugment} pCallback={this.callbackFunction} />
+          <DrawCanvas className="canvas" aCallback={this.callbackAugment} pCallback={this.callbackFunction} 
+          setLoading={this.setLoading}/>
 
-            <div className="Arrow">
+          <div className="Arrow">
           <ArrowForwardIosIcon fontSize="large" style={{ color: '#ffd400' }} />
           </div>
-          <Sketch pCallback={this.callbackFunction} m_file={this.state.a_file} />
+
+          <Sketch pCallback={this.callbackFunction} m_file={this.state.a_file} 
+          loading={this.state.loading} revertToRecommended={this.callbackAugment} setLoading={this.setLoading}/>
+          
           <div className="Arrow">
           <ArrowForwardIosIcon fontSize="large" style={{ color: '#ffd400' }} />
           </div>

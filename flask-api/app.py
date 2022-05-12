@@ -250,6 +250,7 @@ def recomm_sketch():
     os.mkdir(path)
     paths = glob.glob(os.getcwd()+"/flowers_quilting/sketchy/*.png")
     selected_paths = random.sample(paths, total)
+    
     for i in selected_paths:
         try:
             shutil.copy(i, path)
@@ -281,7 +282,7 @@ def augment_recomm():
 
 
     # Args: img, retreival, linewise, drawn
-    img = augment(None, False, False, False) 
+    img = augment(None, False, True, False)
     print("[+] Recommended image augmentation successful!")
     
     rawBytes = io.BytesIO()

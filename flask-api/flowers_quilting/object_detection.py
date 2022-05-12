@@ -83,7 +83,6 @@ def object_detection(path, action="sketches", m_dir='/../detected_objects/',retr
         ROI = Image.fromarray(ROI)
         ROI=convertImage(ROI,action)
         ROI.save(end_path)
-        print("end_path = ", end_path)
 
         num += 1
     

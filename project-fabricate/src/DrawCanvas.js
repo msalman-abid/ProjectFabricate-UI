@@ -59,6 +59,7 @@ class DrawCanvas extends Component {
 
             console.log(this.state.alignment);
             console.log(this.state.retrieval);
+            this.props.setLoading(true);
 
             fetch('/api/augment', {
               method: 'POST',
