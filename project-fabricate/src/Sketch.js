@@ -22,7 +22,10 @@ class Sketch extends Component {
         
         this.setState({
           file: URL.createObjectURL(elem.target.files[0]),
-        }, this.backendPredict(elem.target.files[0]))
+        }, () => {
+          this.props.revertToRecommended(this.state.file);
+          this.backendPredict(elem.target.files[0]);
+        });
 
       }
 
