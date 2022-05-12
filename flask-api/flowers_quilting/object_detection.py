@@ -9,7 +9,6 @@ from .transparent import convertImage
 
 
 def object_detection(path, action="sketches", m_dir='/../detected_objects/',retrieval=False):
-    print(path)
     image = None
     retrieved = False
 
@@ -19,14 +18,11 @@ def object_detection(path, action="sketches", m_dir='/../detected_objects/',retr
     if type(path) == str:
         image = cv2.imread(path)
         retrieved = True
-        print('HERE')
-        print(type(image))
     else:
         # image = path # assuming image format is already RGB
         image = np.array(path) 
         # Convert RGB to BGR 
         image = image[:, :, ::-1].copy() 
-        print(type(image))
    
     original = image.copy()
 
@@ -83,7 +79,6 @@ def object_detection(path, action="sketches", m_dir='/../detected_objects/',retr
             end_path = base + str(num)+ orig_name.split('.')[0] + ext
 
 
-        print(num, end_path)
         ROI=cv2.cvtColor(ROI, cv2.COLOR_BGR2RGB)
         ROI = Image.fromarray(ROI)
         ROI=convertImage(ROI,action)
