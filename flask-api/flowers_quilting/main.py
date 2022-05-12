@@ -14,7 +14,7 @@ def augment(drawnImg, objRetrieval, style, draw=True):
     num_block = 30
     if draw:
         object_detection(drawnImg)
-        similar_paths =retrieval()
+        similar_paths = retrieval()
         images = total_images_drawn(similar_paths, objRetrieval)
     else:
         images = glob.glob(os.getcwd()+"/detected_objects/*")

@@ -72,17 +72,18 @@ def object_detection(path, action="sketches", m_dir='/../detected_objects/',retr
         base = base + m_dir
         if not retrieved:
             ext = '.png'
-            end_path = base + str(num)+ext
+            end_path = base + str(num)+ ext
         else:
             ext='.jpg' if path.split('.')[1]=='jpg' else '.png'
             orig_name = os.path.basename(path)
-            end_path = base + str(num)+ orig_name.split('.')[0] + ext
+            end_path = base + orig_name.split('.')[0] + ext
 
 
         ROI=cv2.cvtColor(ROI, cv2.COLOR_BGR2RGB)
         ROI = Image.fromarray(ROI)
         ROI=convertImage(ROI,action)
         ROI.save(end_path)
+        print("end_path = ", end_path)
 
         num += 1
     

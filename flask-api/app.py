@@ -63,6 +63,13 @@ print("[+] Model loaded successfully.")
 if not os.path.exists('./tmp'):
     os.makedirs('./tmp')
 
+assert os.path.exists('./tmp')
+assert os.path.exists('./Shapes')
+assert os.path.exists('./flowers_quilting/complete_sketchy')
+assert os.path.exists('./flowers_quilting/sketchy')
+assert os.path.exists('./flowers_quilting/feature_array')
+assert os.path.exists('./flowers_quilting/flowers_feature_array')
+
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024 # 16 MB
 print("[+] Server started succesfully.")
