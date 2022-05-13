@@ -1,6 +1,6 @@
 import subprocess
 from flask import Flask
-from flask import request, json
+from flask import request
 from PIL import Image
 import PIL
 import os , io , sys
@@ -65,6 +65,7 @@ if not os.path.exists('./tmp'):
 
 assert os.path.exists('./tmp')
 assert os.path.exists('./Shapes')
+assert os.path.exists('./detected_dupatta')
 assert os.path.exists('./flowers_quilting/complete_sketchy')
 # assert os.path.exists('./flowers_quilting/sketchy')
 assert os.path.exists('./flowers_quilting/feature_array')
@@ -178,7 +179,6 @@ def tiled():
     # shutil.rmtree(dupatta_path,ignore_errors=True)
     # os.mkdir(dupatta_path)
 
-
     file = request.files['image']
     size = request.form['size']
     overlap = request.form['overlap']
@@ -192,6 +192,17 @@ def tiled():
     img_base64 = image_to_bytes(image)
 
     print("[+] Image tiling successful!")
+
+    return {'status':str(img_base64), 'tiled': True}
+
+# route for /apparel
+@app.route('/api/apparel', methods=['POST'])
+def apparel():
+    file1 = request.files['src_image']
+    file2 = request.files['tiled_image']
+    
+    src_img = Image.open(file1) # tile block
+    image = Image.open(file2) # tiled image
 
     mask = apparel_generation(image, "templates/mask2.png")
     mask_base64 = image_to_bytes(mask)
@@ -231,13 +242,13 @@ def tiled():
 
     print("[+] Apparel Generated!")
 
-    return {'status':str(img_base64), 'tiled': True, \
-     'mask': str(mask_base64), 'mask2': str(mask2_base64), \
-        'cushion': str(cushion_base64), 'slipper' : str(slipper_base64), 
-        'scrunchie' : str(scrunchie_base64), 'complementary': str(comp_base64), \
-        'complementary2': str(comp2_base64), 'complementary3': str(comp3_base64), 
-        'complementary4': str(comp4_base64), 'complementary5': str(comp5_base64),
-        'complementary6': str(comp6_base64), 'complementary7': str(comp7_base64)}
+    return {'tiled': True, \
+    'mask': str(mask_base64), 'mask2': str(mask2_base64), \
+    'cushion': str(cushion_base64), 'slipper' : str(slipper_base64), 
+    'scrunchie' : str(scrunchie_base64), 'complementary': str(comp_base64), \
+    'complementary2': str(comp2_base64), 'complementary3': str(comp3_base64), 
+    'complementary4': str(comp4_base64), 'complementary5': str(comp5_base64),
+    'complementary6': str(comp6_base64), 'complementary7': str(comp7_base64)}
 
 
 @app.route('/api/recomm_sketch', methods=['GET'])

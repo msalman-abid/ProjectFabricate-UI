@@ -77,17 +77,20 @@ padding-top: 2%;
     transform: rotate(360deg);
   }
 }
-/* 
-.Apparel{
-  background-color: black;
+
+.image{
+  padding-left: 5%;
+}
+
+.colorRow{
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  padding-left: 10%;
-  padding-bottom: 2%;
-} */
+}
 
-.image{
-  padding-left: 5%;
+.colorbtn{
+
+  margin-left: 2%;
+  margin-right: 2%;
 }

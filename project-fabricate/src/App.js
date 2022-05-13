@@ -9,7 +9,7 @@ import { Button, Slider, Box, Paper } from '@material-ui/core'
 import Carousel from 'react-material-ui-carousel'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { flexbox } from '@mui/system';
-import {random, floor} from "mathjs";
+import { random, floor } from "mathjs";
 
 const marks = [
   {
@@ -73,12 +73,13 @@ class App extends Component {
   }
 
   onClick = () => {
-    
+    // Generate a tiled image from block
+
     // convert image to blob and send to server
     fetch(this.state.p_file)
       .then(res => res.blob())
       .then(blob => {
-        
+
         var formdata = new FormData();
         formdata.append('image', blob);
         console.log(this.state.slider_value)
@@ -90,9 +91,46 @@ class App extends Component {
           method: 'POST',
           body: formdata
         }).then(data => data.json()) //recieve data from server
-        .then(result => {
-          var bytestring = result['status']; //extract from JSON
-          var image = bytestring.split('\'')[1];
+          .then(result => {
+            var bytestring = result['status']; //extract from JSON
+            var image = bytestring.split('\'')[1];
+
+            this.setState({
+              //save base64 image to state
+              tiled: 'data:image/jpeg;base64,' + image,
+              choose: 0
+            })
+          })
+      })
+
+  }
+
+  colorOnClick = () => {
+    this.setState({ choose: floor(random() * 2) },
+      () => {
+        this.onClick();
+      })
+
+  }
+
+  apparelOnClick = () => {
+
+    fetch(this.state.p_file).then(res => res.blob())
+      .then(srcblob => {
+
+    fetch(this.state.tiled)
+      .then(res2 => res2.blob())
+      .then(tiledblob => {
+
+        var formdata = new FormData();
+        formdata.append('src_image', srcblob);
+        formdata.append('tiled_image', tiledblob);
+
+        fetch('/api/apparel', {
+          method: 'POST',
+          body: formdata
+        }).then(data => data.json()) //recieve data from server
+          .then(result => {
             var mask = result['mask'].split('\'')[1];
             var mask2 = result['mask2'].split('\'')[1];
             var cushion = result['cushion'].split('\'')[1];
@@ -107,7 +145,6 @@ class App extends Component {
             var comp7 = result['complementary7'].split('\'')[1];
             this.setState({
               //save base64 image to state
-              tiled: 'data:image/jpeg;base64,' + image,
               mask_img: 'data:image/jpeg;base64,' + mask,
               mask: 'data:image/jpeg;base64,' + mask,
               mask2: 'data:image/jpeg;base64,' + mask2,
@@ -121,21 +158,11 @@ class App extends Component {
               complementary5: 'data:image/jpeg;base64,' + comp5,
               complementary6: 'data:image/jpeg;base64,' + comp6,
               complementary7: 'data:image/jpeg;base64,' + comp7,
-
-              choose: 0
             })
           })
       })
 
-    }
-
-  colorOnClick = () => {
-    this.setState({ choose: floor(random() * 2)}, 
-    () => {
-      this.onClick();
-    })
-
-  }
+  })}
 
   render() {
     return (
@@ -147,18 +174,18 @@ class App extends Component {
           </p>
         </header>
         <div className='Components'>
-          <DrawCanvas className="canvas" aCallback={this.callbackAugment} pCallback={this.callbackFunction} 
-          setLoading={this.setLoading}/>
+          <DrawCanvas className="canvas" aCallback={this.callbackAugment} pCallback={this.callbackFunction}
+            setLoading={this.setLoading} />
 
           <div className="Arrow">
-          <ArrowForwardIosIcon fontSize="large" style={{ color: '#ffd400' }} />
+            <ArrowForwardIosIcon fontSize="large" style={{ color: '#ffd400' }} />
           </div>
 
-          <Sketch pCallback={this.callbackFunction} m_file={this.state.a_file} 
-          loading={this.state.loading} revertToRecommended={this.callbackAugment} setLoading={this.setLoading}/>
-          
+          <Sketch pCallback={this.callbackFunction} m_file={this.state.a_file}
+            loading={this.state.loading} revertToRecommended={this.callbackAugment} setLoading={this.setLoading} />
+
           <div className="Arrow">
-          <ArrowForwardIosIcon fontSize="large" style={{ color: '#ffd400' }} />
+            <ArrowForwardIosIcon fontSize="large" style={{ color: '#ffd400' }} />
           </div>
 
           <Design m_file={this.state.p_file} />
@@ -168,7 +195,7 @@ class App extends Component {
 
           {/* <Autoenc m_design={this.state.a_file}/> */}
         </div>
-        
+
         <h1> Image Tiling</h1>
         <div className='Row'>
 
@@ -187,9 +214,9 @@ class App extends Component {
                 { slider_value: value },
                 this.onClick()
                 // console.log(this.state.slider_value)
-                )}
-                
-                />
+              )}
+
+            />
           </Box>
 
           <div className="button">
@@ -220,26 +247,47 @@ class App extends Component {
         <div className="Row">
           <Box
             sx={{
-              
+
               height: '100vmin',
               width: '100vmin',
               display: "flex",
               flexDirection: "row",
               alignItems: "center",
             }}
-            >
+          >
             <Paper hidden={this.state.tiled ? false : true} elevation={3}>
               <img className='tiled' src={this.state.tiled} ></img>
             </Paper>
           </Box>
         </div>
-          <Button style={{ color: '#282c34' }} variant='contained' size='large' onClick={this.colorOnClick}> Change Color</Button>
-
+        <div className="colorRow" style={{ display: "flex", alignItems: 'center' }}>
+        <div className='colorbtn' >
+        <Button style={{ color: '#282c34' }} variant='contained'
+          size='large' onClick={this.colorOnClick}>
+          Change Color
+        </Button>
+        </div>
+        <Button
+          style={{ background: '#ffd400' }}
+          variant='contained'
+          size='large'
+          onClick={this.apparelOnClick}>
+          Generate Apparel
+        </Button>
+        </div>
 
         <h1>Complementary Designs</h1>
         <Carousel>
           <div>
-            <img src={this.state.tiled} width='256' height='256'/>
+            <img src={this.state.tiled} width='256' height='256' />
+            <img src={this.state.complementary6} />
+          </div>
+          <div>
+            <img src={this.state.tiled} width='256' height='256' />
+            <img src={this.state.complementary7} />
+          </div>
+          <div>
+            <img src={this.state.tiled} width='256' height='256' />
             <img src={this.state.complementary} />
           </div>
           <div>
@@ -258,19 +306,11 @@ class App extends Component {
             <img src={this.state.tiled} width='256' height='256' />
             <img src={this.state.complementary5} />
           </div>
-          <div>
-            <img src={this.state.tiled} width='256' height='256' />
-            <img src={this.state.complementary6} />
-          </div>
-          <div>
-            <img src={this.state.tiled} width='256' height='256' />
-            <img src={this.state.complementary7} />
-          </div>
-            </Carousel>
+        </Carousel>
 
         <h1> Apparel Designs</h1>
-          <img  className="image" hidden={this.state.tiled ? false : true} id="mask" height="250" width="250" 
-          src= {this.state.mask_img}
+        <img className="image" hidden={this.state.tiled ? false : true} id="mask" height="250" width="250"
+          src={this.state.mask_img}
           onMouseOut={() => {
             this.setState({
               mask_img: this.state.mask
@@ -281,13 +321,13 @@ class App extends Component {
               mask_img: this.state.mask2
             })
           }}
-          >
+        >
 
-          </img>
-          <img  className="image" hidden={this.state.tiled ? false : true} id="cushion" height="300" width="300" src={this.state.cushion}></img>
-          <img  className="image" hidden={this.state.tiled ? false : true} id="slipper" height="250" width="250" src={this.state.slipper}></img>
-          <img  className="image" hidden={this.state.tiled ? false : true} id="scrunchie" height="250" width="250" src={this.state.scrunchie}></img>
-          {/* <img id="complementary" height="250" width="250" src={this.state.complementary}></img> */}
+        </img>
+        <img className="image" hidden={this.state.tiled ? false : true} id="cushion" height="300" width="300" src={this.state.cushion}></img>
+        <img className="image" hidden={this.state.tiled ? false : true} id="slipper" height="250" width="250" src={this.state.slipper}></img>
+        <img className="image" hidden={this.state.tiled ? false : true} id="scrunchie" height="250" width="250" src={this.state.scrunchie}></img>
+        {/* <img id="complementary" height="250" width="250" src={this.state.complementary}></img> */}
 
       </div>
     );

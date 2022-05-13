@@ -11,7 +11,7 @@ import glob
 
 
 def augment(drawnImg, objRetrieval, style, draw=True):
-    num_block = 30
+    num_block = 15
     if draw:
         object_detection(drawnImg)
         similar_paths = retrieval()
