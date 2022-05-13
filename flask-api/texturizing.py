@@ -272,13 +272,9 @@ def dupatta(img: Image, choice: str):
 
 
 def post_processing(img: Image, choose):
-    if choose == 1:
-        pattern = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
-    elif choose == 2:
-        pattern = cv2.cvtColor(np.array(img), cv2.COLOR_BGR2HLS)
-    elif choose == 3:
-        pattern = cv2.cvtColor(np.array(img), cv2.COLOR_BGR2HSV)
-    elif choose == 4:
-        pattern = cv2.cvtColor(np.array(img), cv2.COLOR_BGR2LAB)
-    result = Image.fromarray(pattern)
+    if choose == 0:
+        result = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
+    else:
+        result = cv2.cvtColor(np.array(img), cv2.COLOR_BGR2RGB)
+    result = Image.fromarray(result)
     return result

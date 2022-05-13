@@ -66,9 +66,9 @@ if not os.path.exists('./tmp'):
 assert os.path.exists('./tmp')
 assert os.path.exists('./Shapes')
 assert os.path.exists('./flowers_quilting/complete_sketchy')
-assert os.path.exists('./flowers_quilting/sketchy')
+# assert os.path.exists('./flowers_quilting/sketchy')
 assert os.path.exists('./flowers_quilting/feature_array')
-assert os.path.exists('./flowers_quilting/flowers_feature_array')
+# assert os.path.exists('./flowers_quilting/flowers_feature_array')
 
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024 # 16 MB
@@ -231,7 +231,6 @@ def tiled():
 
     print("[+] Apparel Generated!")
 
-
     return {'status':str(img_base64), 'tiled': True, \
      'mask': str(mask_base64), 'mask2': str(mask2_base64), \
         'cushion': str(cushion_base64), 'slipper' : str(slipper_base64), 
@@ -248,7 +247,7 @@ def recomm_sketch():
     path = os.getcwd()+"/detected_objects"
     shutil.rmtree(path,ignore_errors=True)
     os.mkdir(path)
-    paths = glob.glob(os.getcwd()+"/flowers_quilting/sketchy/*.png")
+    paths = glob.glob(os.getcwd()+"/flowers_quilting/complete_sketchy/*.png")
     selected_paths = random.sample(paths, total)
     
     for i in selected_paths:

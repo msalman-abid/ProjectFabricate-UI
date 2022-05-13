@@ -130,7 +130,7 @@ class App extends Component {
     }
 
   colorOnClick = () => {
-    this.setState({ choose: floor(random() * 4) + 1}, 
+    this.setState({ choose: floor(random() * 2)}, 
     () => {
       this.onClick();
     })

@@ -56,6 +56,14 @@ def randomRotation(patch):
         patch = np.rot90(np.fliplr(patch))
     return patch
 
+def randomRotation2(patch):
+    rotation = np.random.randint(1, 3)
+    if rotation == 1:
+        patch = np.fliplr(patch)
+    if rotation == 2:
+        patch = np.rot90(np.fliplr(patch))
+    return patch
+
 def chooseSize(patch):
     sizes = np.random.randint(1, 2)
     if sizes == 2:
@@ -80,7 +88,7 @@ def gridStyle(images, size, img):
             x = j * (block_size-1)
             choice = random.choice(images)
             patch = cv2.imread(choice, cv2.IMREAD_UNCHANGED)
-            patch = randomRotation(patch)
+            patch = randomRotation2(patch)
             if patch.shape[0] >= block_size or patch.shape[1] >= block_size:
                 patch = Image.fromarray(patch)
                 patch = resizeimage.resize_cover(
