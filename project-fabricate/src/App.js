@@ -279,31 +279,31 @@ class App extends Component {
         <h1>Complementary Designs</h1>
         <Carousel>
           <div>
-            <img src={this.state.tiled} width='256' height='256' alt="tiled_pattern"/>
+            <img src={this.state.tiled} width='256' height='256' alt=""/>
             <img src={this.state.complementary6} alt=""/>
           </div>
           <div>
-            <img src={this.state.tiled} width='256' height='256' alt="tiled_pattern"/>
+            <img src={this.state.tiled} width='256' height='256' alt=""/>
             <img src={this.state.complementary7} alt=""/>
           </div>
           <div>
-            <img src={this.state.tiled} width='256' height='256' alt="tiled_pattern"/>
+            <img src={this.state.tiled} width='256' height='256' alt=""/>
             <img src={this.state.complementary} alt=""/>
           </div>
           <div>
-            <img src={this.state.tiled} width='256' height='256' alt="tiled_pattern"/>
+            <img src={this.state.tiled} width='256' height='256' alt=""/>
             <img src={this.state.complementary2} alt=""/>
           </div>
           <div>
-            <img src={this.state.tiled} width='256' height='256' alt="tiled_pattern"/>
+            <img src={this.state.tiled} width='256' height='256' alt=""/>
             <img src={this.state.complementary3} alt=""/>
           </div>
           <div>
-            <img src={this.state.tiled} width='256' height='256' alt="tiled_pattern"/>
+            <img src={this.state.tiled} width='256' height='256' alt=""/>
             <img src={this.state.complementary4} alt=""/>
           </div>
           <div>
-            <img src={this.state.tiled} width='256' height='256' alt="src_pattern"/>
+            <img src={this.state.tiled} width='256' height='256' alt=""/>
             <img src={this.state.complementary5} alt=""/>
           </div>
         </Carousel>
