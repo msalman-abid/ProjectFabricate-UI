@@ -222,7 +222,7 @@ class App extends Component {
         </header>
         <div className='Components'>
           <DrawCanvas className="canvas" aCallback={this.callbackAugment} pCallback={this.callbackFunction}
-            setLoading={this.setLoading} reset={this.resetCallback}/>
+            setLoading={this.setLoading} reset={this.resetCallback} loading={this.state.loading}/>
 
           <div className="Arrow">
             <ArrowForwardIosIcon fontSize="large" style={{ color: '#ffd400' }} />
@@ -341,37 +341,53 @@ class App extends Component {
 
         <h1>Complementary Designs</h1>
         <Carousel>
+          { this.state.tiled ?
           <div>
             <img src={this.state.tiled} width='256' height='256' alt=""/>
             <img src={this.state.complementary6} alt=""/>
           </div>
+          : null}
+          { this.state.tiled ?
           <div>
             <img src={this.state.tiled} width='256' height='256' alt=""/>
             <img src={this.state.complementary7} alt=""/>
           </div>
+          : null}
+          { this.state.tiled ?
           <div>
             <img src={this.state.tiled} width='256' height='256' alt=""/>
             <img src={this.state.complementary} alt=""/>
           </div>
+          : null}
+          { this.state.tiled ?
           <div>
             <img src={this.state.tiled} width='256' height='256' alt=""/>
             <img src={this.state.complementary2} alt=""/>
           </div>
+          : null}
+          { this.state.tiled ?
           <div>
             <img src={this.state.tiled} width='256' height='256' alt=""/>
             <img src={this.state.complementary3} alt=""/>
           </div>
+          : null}
+          { this.state.tiled ?
           <div>
             <img src={this.state.tiled} width='256' height='256' alt=""/>
             <img src={this.state.complementary4} alt=""/>
           </div>
+          : null}
+          { this.state.tiled ?
           <div>
             <img src={this.state.tiled} width='256' height='256' alt=""/>
             <img src={this.state.complementary5} alt=""/>
           </div>
+          : null}
+          
         </Carousel>
 
         <h1> Apparel Designs</h1>
+        { this.state.mask_img ? 
         <img className="image" hidden={this.state.tiled ? false : true} id="mask" height="250" width="250"
           alt =""
           src={this.state.mask_img}
@@ -385,12 +401,12 @@ class App extends Component {
               mask_img: this.state.mask2
             })
           }}
-        >
+        > 
+        </img> : null}
 
-        </img>
-        <img className="image" hidden={this.state.tiled ? false : true} id="cushion" height="300" width="300" src={this.state.cushion} alt=""></img>
-        <img className="image" hidden={this.state.tiled ? false : true} id="slipper" height="250" width="250" src={this.state.slipper} alt=""></img>
-        <img className="image" hidden={this.state.tiled ? false : true} id="scrunchie" height="250" width="250" src={this.state.scrunchie} alt=""></img>
+        {this.state.cushion ? <img className="image" hidden={this.state.tiled ? false : true} id="cushion" height="300" width="300" src={this.state.cushion} alt=""></img> : null}
+        {this.state.slipper ? <img className="image" hidden={this.state.tiled ? false : true} id="slipper" height="250" width="250" src={this.state.slipper} alt=""></img>: null}
+        {this.state.scrunchie ? <img className="image" hidden={this.state.tiled ? false : true} id="scrunchie" height="250" width="250" src={this.state.scrunchie} alt=""></img>: null}
         {/* <img id="complementary" height="250" width="250" src={this.state.complementary}></img> */}
 
       </div>

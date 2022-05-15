@@ -18,7 +18,7 @@ const onDownload = () => {
         <div>
             <h2> Design Generator</h2>
             <div className="BoundingBox">
-                <img id="final" width="400" height="400" src={props.m_file} alt=""/>
+                {props.m_file ? <img id="final" width="400" height="400" src={props.m_file} alt=""/> : null}
             </div>
             <div className="btn">
             <Button onClick={onDownload} variant="contained" >

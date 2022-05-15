@@ -146,6 +146,7 @@ class DrawCanvas extends Component {
         </div>
 
         <Button style={{ background: '#ffd400' }} variant='contained' size='large'
+          //disable Button
           onClick={() => {
             localStorage.setItem(
               "savedDrawing",
@@ -154,7 +155,7 @@ class DrawCanvas extends Component {
             this.props.reset();
             this.augment();
           }}
-        >
+          disabled={this.props.loading}>
           Submit
         </Button>
       </div>
