@@ -178,7 +178,9 @@ def apparel_generation(pattern: Image, templatePath: str, black = True):
         thresh = cv2.threshold(masked,255, 0, cv2.THRESH_TRUNC)[1]
         result = pattern.copy()
         result= np.where(thresh==255, pattern, thresh)
-        result[result==[36,28,237]]=255
+        # result[result==[36,28,237]]=255
+        mask = np.all(result == [36,28,237], axis=-1)
+        result[mask]=255
     else:
         gray = cv2.cvtColor(masked, cv2.COLOR_BGR2GRAY)
         thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_OTSU)[1]
