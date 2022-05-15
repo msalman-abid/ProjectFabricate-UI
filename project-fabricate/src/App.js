@@ -4,12 +4,12 @@ import './App.css';
 import DrawCanvas from './DrawCanvas';
 import Sketch from './Sketch';
 import Design from './Design'
-import Autoenc from './Autoenc'
 import { Button, Slider, Box, Paper } from '@material-ui/core'
 import Carousel from 'react-material-ui-carousel'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import { flexbox } from '@mui/system';
 import { random, floor } from "mathjs";
+
+// import Autoenc from './Autoenc'
 
 const marks = [
   {
@@ -256,17 +256,17 @@ class App extends Component {
             }}
           >
             <Paper hidden={this.state.tiled ? false : true} elevation={3}>
-              <img className='tiled' src={this.state.tiled} ></img>
+              <img className='tiled' src={this.state.tiled} alt=""></img>
             </Paper>
           </Box>
         </div>
         <div className="colorRow" style={{ display: "flex", alignItems: 'center' }}>
-        <div className='colorbtn' >
+        {/* <div className='colorbtn' >
         <Button style={{ color: '#282c34' }} variant='contained'
           size='large' onClick={this.colorOnClick}>
           Change Color
         </Button>
-        </div>
+        </div> */}
         <Button
           style={{ background: '#ffd400' }}
           variant='contained'
@@ -279,37 +279,38 @@ class App extends Component {
         <h1>Complementary Designs</h1>
         <Carousel>
           <div>
-            <img src={this.state.tiled} width='256' height='256' />
-            <img src={this.state.complementary6} />
+            <img src={this.state.tiled} width='256' height='256' alt="tiled_pattern"/>
+            <img src={this.state.complementary6} alt=""/>
           </div>
           <div>
-            <img src={this.state.tiled} width='256' height='256' />
-            <img src={this.state.complementary7} />
+            <img src={this.state.tiled} width='256' height='256' alt="tiled_pattern"/>
+            <img src={this.state.complementary7} alt=""/>
           </div>
           <div>
-            <img src={this.state.tiled} width='256' height='256' />
-            <img src={this.state.complementary} />
+            <img src={this.state.tiled} width='256' height='256' alt="tiled_pattern"/>
+            <img src={this.state.complementary} alt=""/>
           </div>
           <div>
-            <img src={this.state.tiled} width='256' height='256' />
-            <img src={this.state.complementary2} />
+            <img src={this.state.tiled} width='256' height='256' alt="tiled_pattern"/>
+            <img src={this.state.complementary2} alt=""/>
           </div>
           <div>
-            <img src={this.state.tiled} width='256' height='256' />
-            <img src={this.state.complementary3} />
+            <img src={this.state.tiled} width='256' height='256' alt="tiled_pattern"/>
+            <img src={this.state.complementary3} alt=""/>
           </div>
           <div>
-            <img src={this.state.tiled} width='256' height='256' />
-            <img src={this.state.complementary4} />
+            <img src={this.state.tiled} width='256' height='256' alt="tiled_pattern"/>
+            <img src={this.state.complementary4} alt=""/>
           </div>
           <div>
-            <img src={this.state.tiled} width='256' height='256' />
-            <img src={this.state.complementary5} />
+            <img src={this.state.tiled} width='256' height='256' alt="src_pattern"/>
+            <img src={this.state.complementary5} alt=""/>
           </div>
         </Carousel>
 
         <h1> Apparel Designs</h1>
         <img className="image" hidden={this.state.tiled ? false : true} id="mask" height="250" width="250"
+          alt ="mask_apparel"
           src={this.state.mask_img}
           onMouseOut={() => {
             this.setState({
@@ -324,9 +325,9 @@ class App extends Component {
         >
 
         </img>
-        <img className="image" hidden={this.state.tiled ? false : true} id="cushion" height="300" width="300" src={this.state.cushion}></img>
-        <img className="image" hidden={this.state.tiled ? false : true} id="slipper" height="250" width="250" src={this.state.slipper}></img>
-        <img className="image" hidden={this.state.tiled ? false : true} id="scrunchie" height="250" width="250" src={this.state.scrunchie}></img>
+        <img className="image" hidden={this.state.tiled ? false : true} id="cushion" height="300" width="300" src={this.state.cushion} alt=""></img>
+        <img className="image" hidden={this.state.tiled ? false : true} id="slipper" height="250" width="250" src={this.state.slipper} alt=""></img>
+        <img className="image" hidden={this.state.tiled ? false : true} id="scrunchie" height="250" width="250" src={this.state.scrunchie} alt=""></img>
         {/* <img id="complementary" height="250" width="250" src={this.state.complementary}></img> */}
 
       </div>

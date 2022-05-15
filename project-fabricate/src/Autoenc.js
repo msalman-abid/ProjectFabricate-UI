@@ -53,7 +53,6 @@ class Autoenc extends Component {
             .then(result => {
               var bytestring = result['status'];
               var image = bytestring.split('\'')[1];
-              var final_img = document.getElementById("final");
               this.setState({
                 finalimg: 'data:image/jpeg;base64,'+image,
               }
@@ -72,6 +71,7 @@ class Autoenc extends Component {
             <h2> Auto Enc Sketch</h2>
              <div className="Image">
               <img id="upload" width='400' height='400' 
+                alt="uploaded sketch"
                 src={this.state.finalimg}
                  />
             </div>

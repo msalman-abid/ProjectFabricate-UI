@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import './Design.css';
 import { Button } from '@material-ui/core'
 
@@ -6,10 +6,7 @@ import { Button } from '@material-ui/core'
 
 function Design (props) {
     
-//   // const model = async () => {
-//   //   const x = await tf.loadLayersModel(process.env.PUBLIC_URL + 'model_converted/model.json');
-//   //   return x;
-//   // }
+
 const onDownload = () => {
     const link = document.createElement("a");
     var my_img = document.getElementById("final")
@@ -21,7 +18,7 @@ const onDownload = () => {
         <div>
             <h2> Design Generator</h2>
             <div className="BoundingBox">
-                <img id="final" width="400" height="400" src={props.m_file}/>
+                <img id="final" width="400" height="400" src={props.m_file} alt=""/>
             </div>
             <div className="btn">
             <Button onClick={onDownload} variant="contained" >

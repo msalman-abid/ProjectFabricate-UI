@@ -131,7 +131,7 @@ class Sketch extends Component {
                 height: 400,
                 }}>
               {this.props.loading ? <CircularProgress size={100}/> : 
-              <img id="upload" width='400' height='400' 
+              <img id="upload" width='400' height='400' alt=""
                 src={this.props.m_file == null ? this.state.file : this.props.m_file}/>}
                {/* {this.props.loading ? "\nGenerating..." : null} */}
                </Box>

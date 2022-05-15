@@ -2,9 +2,7 @@ import React, { Component } from "react";
 import { Button } from '@material-ui/core'
 import './DrawCanvas.css';
 import CanvasDraw from "react-canvas-draw";
-import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 
@@ -53,8 +51,8 @@ class DrawCanvas extends Component {
         const file = new File([blob], "image.png");
         var formdata = new FormData();
         formdata.append('image', file);
-        formdata.append('style', this.state.alignment == true ? 1 : 0);
-        formdata.append('retrieval', this.state.retrieval == true ? 1 : 0);
+        formdata.append('style', this.state.alignment === true ? 1 : 0);
+        formdata.append('retrieval', this.state.retrieval === true ? 1 : 0);
 
         console.log(this.state.alignment);
         console.log(this.state.retrieval);
