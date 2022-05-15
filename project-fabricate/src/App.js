@@ -1,10 +1,12 @@
 import logo from './flower.png';
-import React, { Component } from "react";
+import { Component } from "react";
+import * as React from "react";
 import './App.css';
 import DrawCanvas from './DrawCanvas';
 import Sketch from './Sketch';
 import Design from './Design'
-import { Button, Slider, Box, Paper } from '@material-ui/core'
+import { Button, Slider, Box, Paper, Snackbar} from '@material-ui/core'
+import MuiAlert from '@mui/material/Alert';
 import Carousel from 'react-material-ui-carousel'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { random, floor } from "mathjs";
@@ -33,10 +35,13 @@ const marks2 = [
   },
 ];
 
+
+
 class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      api_healthy: false,
       a_file: null,
       p_file: null,
       loading: false,
@@ -58,6 +63,29 @@ class App extends Component {
       mask_img: null,
       choose: 0,
     }
+  }
+
+   handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    console.log(true)
+    this.setState({api_healthy: true});
+  };
+  
+  componentDidMount() {
+    // set get request to api to test if it is responding
+    fetch('/api/test', {method: 'GET'})
+      .then(res => {
+        if (res.ok) {
+          console.log('API is responsive!')
+          this.setState({api_healthy: true})
+          return res.json()
+        } else {
+          console.log('API is not working!')
+        }
+      })
+      
   }
 
   callbackFunction = (childData) => {
@@ -195,7 +223,23 @@ class App extends Component {
 
           {/* <Autoenc m_design={this.state.a_file}/> */}
         </div>
-
+        <Snackbar
+          open={!this.state.api_healthy}
+          autoHideDuration={5000}
+          onclose={this.handleClose}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
+          }}>
+          <MuiAlert 
+          severity="error"
+          elevation={6}
+          variant="filled" 
+          >
+            API is not responding! Please try again later.
+          </MuiAlert>
+        </Snackbar>
+        
         <h1> Image Tiling</h1>
         <div className='Row'>
 

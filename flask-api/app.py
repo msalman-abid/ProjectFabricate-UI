@@ -139,6 +139,11 @@ def augment_me():
     img_base64 = base64.b64encode(rawBytes.read())
     return {'status':str(img_base64), 'augmented': True}
 
+# write endpoint for test
+@app.route('/api/test', methods=['GET'])
+def test():
+    return {'status':'true'}
+
 @app.route('/api/auto_enc', methods=['POST'])
 def auto_enc():
 
