@@ -151,6 +151,7 @@ class DrawCanvas extends Component {
               "savedDrawing",
               this.saveableCanvas.getSaveData()
             );
+            this.props.reset();
             this.augment();
           }}
         >

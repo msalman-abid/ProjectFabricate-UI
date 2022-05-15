@@ -35,8 +35,6 @@ const marks2 = [
   },
 ];
 
-
-
 class App extends Component {
   constructor(props) {
     super(props)
@@ -88,6 +86,27 @@ class App extends Component {
       
   }
 
+  resetCallback = () => {
+    this.setState({
+      a_file: null,
+      p_file: null,
+      tiled: null,
+      mask: null,
+      mask2: null,
+      cushion: null,
+      slipper: null,
+      scrunchie: null,
+      complementary: null,
+      complementary2: null,
+      complementary3: null,
+      complementary4: null,
+      complementary5: null,
+      complementary6: null,
+      complementary7: null,
+      mask_img: null,
+      choose: 0,})
+  }
+  
   callbackFunction = (childData) => {
     this.setState({ p_file: childData });
   }
@@ -203,7 +222,7 @@ class App extends Component {
         </header>
         <div className='Components'>
           <DrawCanvas className="canvas" aCallback={this.callbackAugment} pCallback={this.callbackFunction}
-            setLoading={this.setLoading} />
+            setLoading={this.setLoading} reset={this.resetCallback}/>
 
           <div className="Arrow">
             <ArrowForwardIosIcon fontSize="large" style={{ color: '#ffd400' }} />
@@ -354,7 +373,7 @@ class App extends Component {
 
         <h1> Apparel Designs</h1>
         <img className="image" hidden={this.state.tiled ? false : true} id="mask" height="250" width="250"
-          alt ="mask_apparel"
+          alt =""
           src={this.state.mask_img}
           onMouseOut={() => {
             this.setState({
