@@ -210,27 +210,27 @@ class Sketch extends Component {
                 </div>
  
                 <div className="elements">
-                  <img src={this.state.imgArray[0]} height={200} width={200} alt="Sorry :("/>
+                  <img src={this.state.imgArray[5]} height={200} width={200} alt="Sorry :("/>
                   <Checkbox id="5" />
                 </div>
 
                 <div className="elements">
-                  <img src={this.state.imgArray[1]} height={200} width={200} alt="Sorry :("/>
+                  <img src={this.state.imgArray[6]} height={200} width={200} alt="Sorry :("/>
                   <Checkbox id="6" />
                 </div>
 
                 <div className="elements">
-                  <img src={this.state.imgArray[2]} height={200} width={200} alt="Sorry :("/>
+                  <img src={this.state.imgArray[7]} height={200} width={200} alt="Sorry :("/>
                   <Checkbox id="7" />
                 </div>
 
                 <div className="elements">
-                  <img src={this.state.imgArray[3]} height={200} width={200} alt="Sorry :("/>
+                  <img src={this.state.imgArray[8]} height={200} width={200} alt="Sorry :("/>
                   <Checkbox id="8" />
                 </div>
 
                 <div className="elements">
-                  <img src={this.state.imgArray[4]} height={200} width={200} alt="Sorry :("/>
+                  <img src={this.state.imgArray[9]} height={200} width={200} alt="Sorry :("/>
                   <Checkbox id="9" />
                 </div>
               </div>
