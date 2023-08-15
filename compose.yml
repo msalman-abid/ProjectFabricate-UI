@@ -1,0 +1,22 @@
+version: "3"
+services:
+  frontend:
+    ports:
+      - 80:3000
+    build:
+      context: ./project-fabricate
+      dockerfile: Dockerfile
+    # volumes:
+    #   - /app/node_modules
+    #   - ./project-fabricate:/app
+    # environment:
+    #   - CHOKIDAR_USEPOLLING=true
+    stdin_open: true
+
+  backend:
+    ports:
+      - 5000:5000
+    build:
+      context: ./flask-api
+      dockerfile: Dockerfile
+
