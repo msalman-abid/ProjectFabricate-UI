@@ -73,7 +73,7 @@ class App extends Component {
   
   componentDidMount() {
     // set get request to api to test if it is responding
-    fetch('/api/test', {method: 'GET'})
+    fetch('http://localhost:5000/api/test', {method: 'GET'})
       .then(res => {
         if (res.ok) {
           console.log('API is responsive!')
@@ -134,7 +134,7 @@ class App extends Component {
         formdata.append('choose', this.state.choose)
         // formdata.append('retrieval', this.)
         formdata.append('overlap', this.state.slider2_value);
-        fetch('/api/tiled', {
+        fetch('http://localhost:5000/api/tiled', {
           method: 'POST',
           body: formdata
         }).then(data => data.json()) //recieve data from server
@@ -173,7 +173,7 @@ class App extends Component {
         formdata.append('src_image', srcblob);
         formdata.append('tiled_image', tiledblob);
 
-        fetch('/api/apparel', {
+        fetch('http://localhost:5000/api/apparel', {
           method: 'POST',
           body: formdata
         }).then(data => data.json()) //recieve data from server

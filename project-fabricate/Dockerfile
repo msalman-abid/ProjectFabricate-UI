@@ -8,7 +8,9 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install
+RUN npm install --production
+
+RUN npm install -g serve
 
 # Copy the rest of the application code to the working directory
 COPY . .
@@ -16,8 +18,5 @@ COPY . .
 # Build the React app
 RUN npm run build
 
-# Expose the port the app will run on
-EXPOSE 3000
-
 # Define the command to run your app using 'npm start'
-CMD ["npm", "start"]
+CMD ["serve", "-s", "build", "-l", "3000"]

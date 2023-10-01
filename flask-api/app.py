@@ -1,8 +1,11 @@
 import subprocess
 from flask import Flask
 from flask import request
+from flask_cors import CORS, cross_origin
+
 from PIL import Image
 import PIL
+
 import os , io , sys
 import numpy as np
 import base64
@@ -72,6 +75,8 @@ assert os.path.exists('./flowers_quilting/feature_array')
 # assert os.path.exists('./flowers_quilting/flowers_feature_array')
 
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024 # 16 MB
 print("[+] Server started succesfully.")
 
@@ -309,4 +314,4 @@ def augment_recomm():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0', port=5000, debug=True)

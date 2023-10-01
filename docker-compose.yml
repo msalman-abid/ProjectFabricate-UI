@@ -1,0 +1,27 @@
+version: "3"
+services:
+  frontend:
+    networks:
+      - fabricate-net
+    ports:
+      - 80:3000
+    image: salmanabid03/project-fabricate:frontend
+    # build:
+    #   context: ./project-fabricate
+    #   dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      - backend
+
+  backend:
+    image: salmanabid03/project-fabricate:backend
+    # build:
+    #   context: ./flask-api
+    #   dockerfile: Dockerfile
+    networks:
+      - fabricate-net
+    ports:
+      - 5000:5000
+
+networks:
+  fabricate-net:

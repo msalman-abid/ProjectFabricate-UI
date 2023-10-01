@@ -46,7 +46,7 @@ class Sketch extends Component {
         formdata.append('image',blob);
         console.log(formdata);
 
-        fetch('/api/predict', {
+        fetch('http://localhost:5000/api/predict', {
           method: 'POST',
           body: formdata
         }).then(data => data.json())
@@ -62,7 +62,7 @@ class Sketch extends Component {
       }
 
       getRecommendedSketches(){
-        fetch('/api/recomm_sketch', {
+        fetch('http://localhost:5000/api/recomm_sketch', {
           method: 'GET',
         }).then(data => data.json()
         ).then(result =>{
@@ -95,7 +95,7 @@ class Sketch extends Component {
 
         let formdata = new FormData();
         formdata.append('chkd_array',chkd_array);
-        fetch('/api/augment_recomm', {
+        fetch('http://localhost:5000/api/augment_recomm', {
           method: 'POST',
           body: formdata
         }).then(data => data.json())
