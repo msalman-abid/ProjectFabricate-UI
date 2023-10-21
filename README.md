@@ -5,7 +5,7 @@
 ## 1. Introduction
 This repository contains artifacts for the paper "Fabric Sketch Augmentation & Styling using Deep Learning & Image Synthesis Techniques", published in the conference proceedings for EvoMUSART 2023 ([link](https://doi.org/10.1007/978-3-031-29956-8_21)).
 
-This repository contains the source code only for reference, but *does not* contain the model used for inference, nor the feature vectors for image retrieval. The source code is not functional as-is, but we include docker images to allow running a local demo. For more details, please see [Section 2](#2-quick-start).
+This repository contains the source code only for reference, but *does not* contain the model used for inference, nor the feature vectors for image retrieval. We include a Docker Compose file to allow running a local demo. For more details, please see [Section 2](#2-quick-start).
 
 ## 2. Quick Start
 We provide a Docker Compose file to allow running the demo locally without any concern for dependencies. To start the demo, run:
