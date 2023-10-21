@@ -2,8 +2,6 @@ import React from "react";
 import './Design.css';
 import { Button } from '@material-ui/core'
 
-// import * as tf from '@tensorflow/tfjs';
-
 function Design (props) {
     
 

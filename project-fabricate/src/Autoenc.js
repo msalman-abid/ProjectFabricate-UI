@@ -46,7 +46,7 @@ class Autoenc extends Component {
           formdata.append('image_tex',blob);
           formdata.append('image_struct',blob_struc);
 
-          fetch('/api/auto_enc', {
+          fetch('http://localhost:5000/api/auto_enc', {
             method: 'POST',
             body: formdata
           }).then(data => data.json())

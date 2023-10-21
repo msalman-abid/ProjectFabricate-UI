@@ -29,7 +29,7 @@ class DrawCanvas extends Component {
 
         console.log(formdata);
 
-        fetch('/api/predict', {
+        fetch('http://localhost:5000/api/predict', {
           method: 'POST',
           body: formdata
         }).then(data => data.json())
@@ -58,7 +58,7 @@ class DrawCanvas extends Component {
         console.log(this.state.retrieval);
         this.props.setLoading(true);
 
-        fetch('/api/augment', {
+        fetch('http://localhost:5000/api/augment', {
           method: 'POST',
           body: formdata,
         }).then(data => data.json())
