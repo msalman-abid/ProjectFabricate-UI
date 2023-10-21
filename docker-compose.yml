@@ -18,6 +18,7 @@ services:
     # build:
     #   context: ./flask-api
     #   dockerfile: Dockerfile
+    restart: always
     networks:
       - fabricate-net
     ports:
